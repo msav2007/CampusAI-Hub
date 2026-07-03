@@ -1,0 +1,39 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="40" fill="#11131F" />
+  <rect width="1200" height="630" rx="40" fill="url(#mesh)" />
+  <rect x="48" y="48" width="1104" height="534" rx="32" fill="rgba(12, 15, 25, 0.66)" stroke="rgba(255, 255, 255, 0.08)" />
+  <circle cx="214" cy="150" r="180" fill="url(#glowOne)" />
+  <circle cx="982" cy="470" r="210" fill="url(#glowTwo)" />
+  <circle cx="882" cy="112" r="120" fill="url(#glowThree)" />
+  <text x="104" y="184" fill="#B3B7C5" font-family="Inter, Arial, sans-serif" font-size="24" letter-spacing="6">FREE STUDENT PRODUCTIVITY TOOLS</text>
+  <text x="104" y="286" fill="white" font-family="Geist, Inter, Arial, sans-serif" font-size="82" font-weight="800">CampusAI Tools</text>
+  <text x="104" y="366" fill="#D5DAE6" font-family="Inter, Arial, sans-serif" font-size="34">
+    CGPA calculator, attendance planner, resume ATS checker,
+  </text>
+  <text x="104" y="414" fill="#D5DAE6" font-family="Inter, Arial, sans-serif" font-size="34">
+    and developer tools that run fast in the browser.
+  </text>
+  <rect x="104" y="468" width="264" height="56" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)" />
+  <text x="134" y="504" fill="white" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">No signup required</text>
+  <rect x="390" y="468" width="204" height="56" rx="28" fill="rgba(109, 198, 255, 0.12)" stroke="rgba(109, 198, 255, 0.22)" />
+  <text x="423" y="504" fill="#BCEAFF" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600">Free to use</text>
+  <defs>
+    <radialGradient id="glowOne" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(214 150) rotate(90) scale(180)">
+      <stop stop-color="#915BFF" stop-opacity="0.5" />
+      <stop offset="1" stop-color="#915BFF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glowTwo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(982 470) rotate(90) scale(210)">
+      <stop stop-color="#43D4FF" stop-opacity="0.42" />
+      <stop offset="1" stop-color="#43D4FF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glowThree" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(882 112) rotate(90) scale(120)">
+      <stop stop-color="#FF7BC4" stop-opacity="0.36" />
+      <stop offset="1" stop-color="#FF7BC4" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="mesh" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 44) rotate(90) scale(520 920)">
+      <stop stop-color="#2B2058" stop-opacity="0.58" />
+      <stop offset="0.45" stop-color="#162033" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#11131F" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+</svg>
