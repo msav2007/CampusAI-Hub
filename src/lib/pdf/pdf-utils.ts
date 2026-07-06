@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, rgb, degrees as pdfLibDegrees, StandardFonts } from "pdf-lib";
 import type { ExtractedTextResult, PDFInfo } from "./types";
 
 async function loadPdfJs() {
@@ -101,5 +101,114 @@ export async function splitPdf(file: File, ranges: string): Promise<Blob> {
   });
 
   const newPdfBytes = await newPdf.save();
+  return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
+}
+
+export async function deletePdfPages(file: File, pagesToRemove: number[]): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  const numPages = pdf.getPageCount();
+  
+  // Create a sorted set of 0-indexed pages to remove
+  const toRemove = new Set(pagesToRemove.map(p => p - 1));
+  
+  // We must iterate backwards when removing pages in place to not mess up indices
+  for (let i = numPages - 1; i >= 0; i--) {
+    if (toRemove.has(i)) {
+      pdf.removePage(i);
+    }
+  }
+  
+  if (pdf.getPageCount() === 0) {
+    throw new Error("Cannot delete all pages from the document.");
+  }
+
+  const newPdfBytes = await pdf.save();
+  return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
+}
+
+export async function reorderPdfPages(file: File, newOrderIndices: number[]): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  const newPdf = await PDFDocument.create();
+
+  // newOrderIndices are 0-based indices
+  const copiedPages = await newPdf.copyPages(pdf, newOrderIndices);
+  copiedPages.forEach((page) => {
+    newPdf.addPage(page);
+  });
+
+  const newPdfBytes = await newPdf.save();
+  return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
+}
+
+export async function rotatePdf(file: File, rotationDegrees: number, targetPages?: number[]): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  const numPages = pdf.getPageCount();
+
+  const pagesToRotate = new Set(
+    targetPages && targetPages.length > 0 
+      ? targetPages.map(p => p - 1) 
+      : Array.from({ length: numPages }, (_, i) => i)
+  );
+
+  for (let i = 0; i < numPages; i++) {
+    if (pagesToRotate.has(i)) {
+      const page = pdf.getPage(i);
+      const currentRotation = page.getRotation().angle;
+      page.setRotation(pdfLibDegrees(currentRotation + rotationDegrees));
+    }
+  }
+
+  const newPdfBytes = await pdf.save();
+  return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
+}
+
+export async function watermarkPdf(
+  file: File, 
+  text: string, 
+  options: { opacity: number, size: number, colorHex: string, placement: "center" | "bottom-right" }
+): Promise<Blob> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  
+  const font = await pdf.embedFont(StandardFonts.HelveticaBold);
+  const pages = pdf.getPages();
+  
+  // Parse color (e.g. #FF0000)
+  const hex = options.colorHex.replace("#", "");
+  const r = parseInt(hex.substring(0, 2), 16) / 255;
+  const g = parseInt(hex.substring(2, 4), 16) / 255;
+  const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+  for (const page of pages) {
+    const { width, height } = page.getSize();
+    const textWidth = font.widthOfTextAtSize(text, options.size);
+    const textHeight = font.heightAtSize(options.size);
+    
+    let x = 0;
+    let y = 0;
+    
+    if (options.placement === "center") {
+      x = width / 2 - textWidth / 2;
+      y = height / 2 - textHeight / 2;
+    } else if (options.placement === "bottom-right") {
+      x = width - textWidth - 20;
+      y = 20;
+    }
+    
+    page.drawText(text, {
+      x,
+      y,
+      size: options.size,
+      font: font,
+      color: rgb(r, g, b),
+      opacity: options.opacity,
+      rotate: options.placement === "center" ? pdfLibDegrees(45) : pdfLibDegrees(0),
+    });
+  }
+
+  const newPdfBytes = await pdf.save();
   return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
 }

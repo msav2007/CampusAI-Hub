@@ -20,6 +20,7 @@ export interface FileUploadProps extends Omit<DropzoneOptions, 'onDrop'> {
   maxSize?: number;
   accept?: Record<string, string[]>;
   isLoading?: boolean;
+  onReorder?: (index: number, direction: -1 | 1) => void;
 }
 
 export function FileUpload({
@@ -29,6 +30,7 @@ export function FileUpload({
   maxSize,
   accept,
   isLoading,
+  onReorder,
   ...dropzoneProps
 }: FileUploadProps) {
   const [error, setError] = React.useState<string | null>(null);
@@ -105,6 +107,16 @@ export function FileUpload({
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                {onReorder && (
+                  <>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={() => onReorder(i, -1)} disabled={i === 0 || isLoading}>
+                      <span className="text-lg leading-none">↑</span>
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={() => onReorder(i, 1)} disabled={i === value.length - 1 || isLoading}>
+                      <span className="text-lg leading-none">↓</span>
+                    </Button>
+                  </>
+                )}
                 {maxFiles === 1 && (
                   <Button variant="ghost" size="sm" className="h-8" onClick={() => handleClearAll()} disabled={isLoading}>
                     Replace
