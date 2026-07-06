@@ -60,7 +60,7 @@ export async function mergePdfs(files: File[]): Promise<Blob> {
   }
 
   const mergedPdfBytes = await mergedPdf.save();
-  return new Blob([mergedPdfBytes], { type: "application/pdf" });
+  return new Blob([mergedPdfBytes as unknown as BlobPart], { type: "application/pdf" });
 }
 
 export async function splitPdf(file: File, ranges: string): Promise<Blob> {
@@ -101,5 +101,5 @@ export async function splitPdf(file: File, ranges: string): Promise<Blob> {
   });
 
   const newPdfBytes = await newPdf.save();
-  return new Blob([newPdfBytes], { type: "application/pdf" });
+  return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
 }

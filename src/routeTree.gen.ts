@@ -24,9 +24,7 @@ import { Route as ToolsReadmeGeneratorRouteImport } from './routes/tools.readme-
 import { Route as ToolsPdfToolsRouteImport } from './routes/tools.pdf-tools'
 import { Route as ToolsNotesSummarizerRouteImport } from './routes/tools.notes-summarizer'
 import { Route as ToolsJsonFormatterRouteImport } from './routes/tools.json-formatter'
-import { Route as ToolsInterviewAiRouteImport } from './routes/tools.interview-ai'
 import { Route as ToolsGradePredictorRouteImport } from './routes/tools.grade-predictor'
-import { Route as ToolsCodeExplainerRouteImport } from './routes/tools.code-explainer'
 import { Route as ToolsCgpaCalculatorRouteImport } from './routes/tools.cgpa-calculator'
 import { Route as ToolsAttendanceCalculatorRouteImport } from './routes/tools.attendance-calculator'
 
@@ -105,19 +103,9 @@ const ToolsJsonFormatterRoute = ToolsJsonFormatterRouteImport.update({
   path: '/tools/json-formatter',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ToolsInterviewAiRoute = ToolsInterviewAiRouteImport.update({
-  id: '/tools/interview-ai',
-  path: '/tools/interview-ai',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ToolsGradePredictorRoute = ToolsGradePredictorRouteImport.update({
   id: '/tools/grade-predictor',
   path: '/tools/grade-predictor',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsCodeExplainerRoute = ToolsCodeExplainerRouteImport.update({
-  id: '/tools/code-explainer',
-  path: '/tools/code-explainer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsCgpaCalculatorRoute = ToolsCgpaCalculatorRouteImport.update({
@@ -143,9 +131,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/tools/attendance-calculator': typeof ToolsAttendanceCalculatorRoute
   '/tools/cgpa-calculator': typeof ToolsCgpaCalculatorRoute
-  '/tools/code-explainer': typeof ToolsCodeExplainerRoute
   '/tools/grade-predictor': typeof ToolsGradePredictorRoute
-  '/tools/interview-ai': typeof ToolsInterviewAiRoute
   '/tools/json-formatter': typeof ToolsJsonFormatterRoute
   '/tools/notes-summarizer': typeof ToolsNotesSummarizerRoute
   '/tools/pdf-tools': typeof ToolsPdfToolsRoute
@@ -165,9 +151,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/tools/attendance-calculator': typeof ToolsAttendanceCalculatorRoute
   '/tools/cgpa-calculator': typeof ToolsCgpaCalculatorRoute
-  '/tools/code-explainer': typeof ToolsCodeExplainerRoute
   '/tools/grade-predictor': typeof ToolsGradePredictorRoute
-  '/tools/interview-ai': typeof ToolsInterviewAiRoute
   '/tools/json-formatter': typeof ToolsJsonFormatterRoute
   '/tools/notes-summarizer': typeof ToolsNotesSummarizerRoute
   '/tools/pdf-tools': typeof ToolsPdfToolsRoute
@@ -188,9 +172,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/tools/attendance-calculator': typeof ToolsAttendanceCalculatorRoute
   '/tools/cgpa-calculator': typeof ToolsCgpaCalculatorRoute
-  '/tools/code-explainer': typeof ToolsCodeExplainerRoute
   '/tools/grade-predictor': typeof ToolsGradePredictorRoute
-  '/tools/interview-ai': typeof ToolsInterviewAiRoute
   '/tools/json-formatter': typeof ToolsJsonFormatterRoute
   '/tools/notes-summarizer': typeof ToolsNotesSummarizerRoute
   '/tools/pdf-tools': typeof ToolsPdfToolsRoute
@@ -212,9 +194,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/tools/attendance-calculator'
     | '/tools/cgpa-calculator'
-    | '/tools/code-explainer'
     | '/tools/grade-predictor'
-    | '/tools/interview-ai'
     | '/tools/json-formatter'
     | '/tools/notes-summarizer'
     | '/tools/pdf-tools'
@@ -234,9 +214,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/tools/attendance-calculator'
     | '/tools/cgpa-calculator'
-    | '/tools/code-explainer'
     | '/tools/grade-predictor'
-    | '/tools/interview-ai'
     | '/tools/json-formatter'
     | '/tools/notes-summarizer'
     | '/tools/pdf-tools'
@@ -256,9 +234,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/tools/attendance-calculator'
     | '/tools/cgpa-calculator'
-    | '/tools/code-explainer'
     | '/tools/grade-predictor'
-    | '/tools/interview-ai'
     | '/tools/json-formatter'
     | '/tools/notes-summarizer'
     | '/tools/pdf-tools'
@@ -279,9 +255,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ToolsAttendanceCalculatorRoute: typeof ToolsAttendanceCalculatorRoute
   ToolsCgpaCalculatorRoute: typeof ToolsCgpaCalculatorRoute
-  ToolsCodeExplainerRoute: typeof ToolsCodeExplainerRoute
   ToolsGradePredictorRoute: typeof ToolsGradePredictorRoute
-  ToolsInterviewAiRoute: typeof ToolsInterviewAiRoute
   ToolsJsonFormatterRoute: typeof ToolsJsonFormatterRoute
   ToolsNotesSummarizerRoute: typeof ToolsNotesSummarizerRoute
   ToolsPdfToolsRoute: typeof ToolsPdfToolsRoute
@@ -398,25 +372,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsJsonFormatterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tools/interview-ai': {
-      id: '/tools/interview-ai'
-      path: '/tools/interview-ai'
-      fullPath: '/tools/interview-ai'
-      preLoaderRoute: typeof ToolsInterviewAiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/tools/grade-predictor': {
       id: '/tools/grade-predictor'
       path: '/tools/grade-predictor'
       fullPath: '/tools/grade-predictor'
       preLoaderRoute: typeof ToolsGradePredictorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools/code-explainer': {
-      id: '/tools/code-explainer'
-      path: '/tools/code-explainer'
-      fullPath: '/tools/code-explainer'
-      preLoaderRoute: typeof ToolsCodeExplainerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/cgpa-calculator': {
@@ -447,9 +407,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ToolsAttendanceCalculatorRoute: ToolsAttendanceCalculatorRoute,
   ToolsCgpaCalculatorRoute: ToolsCgpaCalculatorRoute,
-  ToolsCodeExplainerRoute: ToolsCodeExplainerRoute,
   ToolsGradePredictorRoute: ToolsGradePredictorRoute,
-  ToolsInterviewAiRoute: ToolsInterviewAiRoute,
   ToolsJsonFormatterRoute: ToolsJsonFormatterRoute,
   ToolsNotesSummarizerRoute: ToolsNotesSummarizerRoute,
   ToolsPdfToolsRoute: ToolsPdfToolsRoute,

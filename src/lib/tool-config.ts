@@ -54,23 +54,7 @@ export const toolDefinitions: ToolDefinition[] = [
     status: "live",
     badge: "AI",
   },
-  {
-    slug: "interview-ai",
-    name: "Interview AI",
-    description: "Practice interview answers with local scoring and structured feedback.",
-    category: "Career",
-    status: "live",
-    popular: true,
-    badge: "AI",
-  },
-  {
-    slug: "code-explainer",
-    name: "Code Explainer",
-    description: "Paste code, get a line-by-line explanation.",
-    category: "Developer",
-    status: "live",
-    badge: "AI",
-  },
+
   {
     slug: "readme-generator",
     name: "README Generator",

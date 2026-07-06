@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Menu, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+
 const links = [
   { to: "/tools", label: "Tools" },
   { to: "/dashboard", label: "Preview" },
@@ -81,6 +83,7 @@ export function Nav() {
             </div>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <Link
                 to="/dashboard"
                 className="hidden rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline-flex"
