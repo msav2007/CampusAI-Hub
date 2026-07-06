@@ -54,6 +54,12 @@ export type Skills = {
   other: string;
 };
 
+export type ResumeSettings = {
+  theme: string;
+  fontSize: string;
+  spacing: string;
+};
+
 export type ResumeData = {
   personalInfo: PersonalInfo;
   education: Education[];
@@ -61,4 +67,5 @@ export type ResumeData = {
   projects: Project[];
   certifications: Certification[];
   skills: Skills;
+  settings: ResumeSettings;
 };

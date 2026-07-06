@@ -69,4 +69,9 @@ export const createDefaultResume = (): ResumeData => ({
     tools: "Git, GitHub, VS Code, Figma",
     other: "Agile, RESTful APIs, Responsive Design",
   },
+  settings: {
+    theme: "classic",
+    fontSize: "medium",
+    spacing: "normal"
+  }
 });

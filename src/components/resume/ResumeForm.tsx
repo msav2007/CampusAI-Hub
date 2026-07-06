@@ -26,6 +26,13 @@ export function ResumeForm({
     });
   };
 
+  const updateSettings = (field: keyof ResumeData["settings"], value: string) => {
+    onChange({
+      ...data,
+      settings: { ...data.settings, [field]: value },
+    });
+  };
+
   const addArrayItem = <K extends "education" | "experience" | "projects" | "certifications">(
     field: K,
     newItem: ResumeData[K][0],
@@ -55,8 +62,64 @@ export function ResumeForm({
     onChange({ ...data, [field]: newArray });
   };
 
+  const reorderArrayItem = <K extends "education" | "experience" | "projects" | "certifications">(
+    field: K,
+    index: number,
+    direction: -1 | 1
+  ) => {
+    const newArray = [...data[field]];
+    const target = index + direction;
+    if (target < 0 || target >= newArray.length) return;
+    [newArray[index], newArray[target]] = [newArray[target], newArray[index]];
+    onChange({ ...data, [field]: newArray });
+  };
+
   return (
     <div className="space-y-8 p-1">
+      {/* Design Settings */}
+      <section className="space-y-4 rounded-xl border border-border/50 bg-brand/5 p-4">
+        <h2 className="text-xl font-semibold text-brand">Design Settings</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="space-y-2">
+            <Label>Theme</Label>
+            <select
+              value={data.settings?.theme || "classic"}
+              onChange={(e) => updateSettings("theme", e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <option value="classic">Classic (Black/White)</option>
+              <option value="modern">Modern (Blue/Slate)</option>
+              <option value="professional">Professional (Slate)</option>
+              <option value="minimal">Minimal (Light Gray)</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label>Font Size</Label>
+            <select
+              value={data.settings?.fontSize || "medium"}
+              onChange={(e) => updateSettings("fontSize", e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <option value="small">Small (More fit)</option>
+              <option value="medium">Medium (Standard)</option>
+              <option value="large">Large (More readable)</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <Label>Spacing</Label>
+            <select
+              value={data.settings?.spacing || "normal"}
+              onChange={(e) => updateSettings("spacing", e.target.value)}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <option value="compact">Compact (Dense)</option>
+              <option value="normal">Normal</option>
+              <option value="spacious">Spacious (Airy)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
       {/* Personal Info */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">Personal Information</h2>
@@ -157,14 +220,17 @@ export function ResumeForm({
             key={exp.id}
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
-              onClick={() => removeArrayItem("experience", index)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="absolute right-2 top-2 flex gap-1">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("experience", index, -1)} disabled={index === 0}>
+                ↑
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("experience", index, 1)} disabled={index === data.experience.length - 1}>
+                ↓
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("experience", index)}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Company</Label>
@@ -259,14 +325,17 @@ export function ResumeForm({
             key={edu.id}
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
-              onClick={() => removeArrayItem("education", index)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="absolute right-2 top-2 flex gap-1">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("education", index, -1)} disabled={index === 0}>
+                ↑
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("education", index, 1)} disabled={index === data.education.length - 1}>
+                ↓
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("education", index)}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Institution</Label>
@@ -367,14 +436,17 @@ export function ResumeForm({
             key={proj.id}
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
-              onClick={() => removeArrayItem("projects", index)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="absolute right-2 top-2 flex gap-1">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("projects", index, -1)} disabled={index === 0}>
+                ↑
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("projects", index, 1)} disabled={index === data.projects.length - 1}>
+                ↓
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("projects", index)}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Project Name</Label>
@@ -494,14 +566,17 @@ export function ResumeForm({
             key={cert.id}
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2 text-muted-foreground hover:text-destructive"
-              onClick={() => removeArrayItem("certifications", index)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="absolute right-2 top-2 flex gap-1">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("certifications", index, -1)} disabled={index === 0}>
+                ↑
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("certifications", index, 1)} disabled={index === data.certifications.length - 1}>
+                ↓
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("certifications", index)}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Name</Label>
