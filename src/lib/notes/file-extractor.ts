@@ -9,10 +9,10 @@ export async function extractTextFromFile(file: File): Promise<string> {
     if (type === "application/pdf" || name.endsWith(".pdf")) {
       const res = await extractTextFromPdf(file);
       return res.text;
-    } 
-    
+    }
+
     if (
-      type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || 
+      type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       name.endsWith(".docx")
     ) {
       const arrayBuffer = await file.arrayBuffer();
@@ -25,7 +25,7 @@ export async function extractTextFromFile(file: File): Promise<string> {
     }
 
     throw new Error("Unsupported file type. Please upload a PDF, DOCX, or TXT file.");
-  } catch (err: any) {
-    throw new Error(err.message || "Failed to extract text from file.");
+  } catch (err: unknown) {
+    throw new Error((err as Error).message || "Failed to extract text from file.");
   }
 }

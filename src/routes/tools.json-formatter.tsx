@@ -11,7 +11,7 @@ import {
   Search,
   Wand2,
   Minimize2,
-  ListTree
+  ListTree,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -50,8 +50,14 @@ const FAQ: FaqItem[] = [
 
 const STEPS: HowToStep[] = [
   { title: "Input your JSON", body: "Paste raw JSON into the editor or upload a .json file." },
-  { title: "Review & Format", body: "Check for validation errors or explore the parsed structure in the Tree Viewer." },
-  { title: "Minify or Beautify", body: "Switch between Formatted (2 or 4 spaces) and Minified outputs." },
+  {
+    title: "Review & Format",
+    body: "Check for validation errors or explore the parsed structure in the Tree Viewer.",
+  },
+  {
+    title: "Minify or Beautify",
+    body: "Switch between Formatted (2 or 4 spaces) and Minified outputs.",
+  },
   { title: "Export", body: "Copy the result to your clipboard or download it as a .json file." },
 ];
 
@@ -163,7 +169,9 @@ function JsonPage() {
                   type="button"
                   onClick={() => setUploadMode(false)}
                   className={`px-2 py-1 text-[11px] transition-colors ${
-                    !uploadMode ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                    !uploadMode
+                      ? "bg-foreground text-background"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Paste
@@ -172,7 +180,9 @@ function JsonPage() {
                   type="button"
                   onClick={() => setUploadMode(true)}
                   className={`px-2 py-1 text-[11px] transition-colors ${
-                    uploadMode ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
+                    uploadMode
+                      ? "bg-foreground text-background"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   Upload File
@@ -180,16 +190,31 @@ function JsonPage() {
               </div>
             </div>
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="sm" onClick={() => { setInput(SAMPLE); setUploadMode(false); }}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setInput(SAMPLE);
+                  setUploadMode(false);
+                }}
+              >
                 <Wand2 className="h-3.5 w-3.5" />
                 Sample
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => { setInput(""); setUploadMode(false); }} disabled={!input && !uploadMode}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setInput("");
+                  setUploadMode(false);
+                }}
+                disabled={!input && !uploadMode}
+              >
                 Clear
               </Button>
             </div>
           </div>
-          
+
           {uploadMode ? (
             <div className="flex-1 rounded-xl border border-border/60 bg-surface-2/40 p-4">
               <FileUpload
@@ -214,13 +239,25 @@ function JsonPage() {
         <div className="flex flex-col rounded-2xl glass p-4 shadow-card">
           <div className="flex flex-col gap-3 pb-3">
             <div className="flex items-center justify-between px-1">
-              <span className="text-xs uppercase tracking-widest text-muted-foreground">Output</span>
+              <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                Output
+              </span>
               <div className="flex items-center gap-1">
-                <Button variant="ghost" size="sm" onClick={handleCopy} disabled={output.state !== "ok"}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCopy}
+                  disabled={output.state !== "ok"}
+                >
                   <Copy className="h-3.5 w-3.5" />
                   Copy
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleDownload} disabled={output.state !== "ok"}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDownload}
+                  disabled={output.state !== "ok"}
+                >
                   <Download className="h-3.5 w-3.5" />
                   Save
                 </Button>
@@ -234,7 +271,9 @@ function JsonPage() {
                   type="button"
                   onClick={() => setView("formatted")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-xs transition-colors ${
-                    view === "formatted" ? "bg-foreground text-background font-medium" : "text-muted-foreground hover:text-foreground"
+                    view === "formatted"
+                      ? "bg-foreground text-background font-medium"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Braces className="h-3.5 w-3.5" />
@@ -244,7 +283,9 @@ function JsonPage() {
                   type="button"
                   onClick={() => setView("tree")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-xs transition-colors ${
-                    view === "tree" ? "bg-foreground text-background font-medium" : "text-muted-foreground hover:text-foreground"
+                    view === "tree"
+                      ? "bg-foreground text-background font-medium"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <ListTree className="h-3.5 w-3.5" />
@@ -254,7 +295,9 @@ function JsonPage() {
                   type="button"
                   onClick={() => setView("minified")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-xs transition-colors ${
-                    view === "minified" ? "bg-foreground text-background font-medium" : "text-muted-foreground hover:text-foreground"
+                    view === "minified"
+                      ? "bg-foreground text-background font-medium"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Minimize2 className="h-3.5 w-3.5" />
@@ -318,7 +361,7 @@ function JsonPage() {
                     <CheckCircle2 className="h-3 w-3" />
                     Valid
                   </div>
-                  
+
                   {view === "formatted" && (
                     <pre className="whitespace-pre-wrap break-words font-mono text-[13px] leading-relaxed">
                       {output.text}
@@ -347,7 +390,8 @@ function JsonPage() {
                     <div className="mt-1 break-words text-destructive/80">{output.message}</div>
                     {output.location ? (
                       <div className="mt-2 inline-block rounded-md border border-destructive/20 bg-destructive/10 px-3 py-1.5 text-xs text-destructive-foreground">
-                        Line <span className="font-bold">{output.location.line}</span>, Column <span className="font-bold">{output.location.column}</span>
+                        Line <span className="font-bold">{output.location.line}</span>, Column{" "}
+                        <span className="font-bold">{output.location.column}</span>
                       </div>
                     ) : null}
                   </div>
@@ -359,25 +403,43 @@ function JsonPage() {
             {output.state === "ok" && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <div className="rounded-lg bg-surface-2/30 border border-border/50 p-2.5 flex flex-col items-center text-center">
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Keys</span>
-                  <span className="font-mono text-sm font-semibold mt-0.5">{output.stats.totalKeys}</span>
-                </div>
-                <div className="rounded-lg bg-surface-2/30 border border-border/50 p-2.5 flex flex-col items-center text-center">
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Depth</span>
-                  <span className="font-mono text-sm font-semibold mt-0.5">{output.stats.maxDepth}</span>
-                </div>
-                <div className="rounded-lg bg-surface-2/30 border border-border/50 p-2.5 flex flex-col items-center text-center">
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Size</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+                    Keys
+                  </span>
                   <span className="font-mono text-sm font-semibold mt-0.5">
-                    {view === "minified" ? formatBytes(new Blob([output.minified]).size) : formatBytes(output.stats.sizeBytes)}
+                    {output.stats.totalKeys}
                   </span>
                 </div>
                 <div className="rounded-lg bg-surface-2/30 border border-border/50 p-2.5 flex flex-col items-center text-center">
-                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Reduction</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+                    Depth
+                  </span>
+                  <span className="font-mono text-sm font-semibold mt-0.5">
+                    {output.stats.maxDepth}
+                  </span>
+                </div>
+                <div className="rounded-lg bg-surface-2/30 border border-border/50 p-2.5 flex flex-col items-center text-center">
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+                    Size
+                  </span>
+                  <span className="font-mono text-sm font-semibold mt-0.5">
+                    {view === "minified"
+                      ? formatBytes(new Blob([output.minified]).size)
+                      : formatBytes(output.stats.sizeBytes)}
+                  </span>
+                </div>
+                <div className="rounded-lg bg-surface-2/30 border border-border/50 p-2.5 flex flex-col items-center text-center">
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+                    Reduction
+                  </span>
                   <span className="font-mono text-sm font-semibold mt-0.5 text-emerald-400">
                     {output.text.length > 0
-                      ? Math.max(0, Math.round((1 - output.minified.length / output.text.length) * 100))
-                      : 0}%
+                      ? Math.max(
+                          0,
+                          Math.round((1 - output.minified.length / output.text.length) * 100),
+                        )
+                      : 0}
+                    %
                   </span>
                 </div>
               </div>

@@ -1,5 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BookOpen, Copy, Download, FileCode2, RotateCcw, Sparkles, CheckSquare, Square, Eye, FileText } from "lucide-react";
+import {
+  BookOpen,
+  Copy,
+  Download,
+  FileCode2,
+  RotateCcw,
+  Sparkles,
+  CheckSquare,
+  Square,
+  Eye,
+  FileText,
+} from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -15,7 +26,13 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { buildPageHead, jsonLdScript } from "@/lib/seo";
 import { readJsonFromStorage, writeJsonToStorage } from "@/lib/storage";
 import { faqJsonLd, howToJsonLd, type FaqItem, type HowToStep } from "@/lib/structured-data";
-import { generateReadme, type ReadmeInput, DEFAULT_README_INPUT, BADGE_URLS, type TechCategory } from "@/lib/readme-generator/logic";
+import {
+  generateReadme,
+  type ReadmeInput,
+  DEFAULT_README_INPUT,
+  BADGE_URLS,
+  type TechCategory,
+} from "@/lib/readme-generator/logic";
 import { TEMPLATES } from "@/lib/readme-generator/templates";
 
 const STORAGE_KEY = "campusai:readmegenerator:v2";
@@ -28,15 +45,31 @@ const emptyInput: ReadmeInput = {
   demoUrl: "",
   githubRepo: "",
   badges: {
-    react: false, typescript: false, javascript: false, python: false, node: false, next: false, vite: false, license: true, version: false, build: false,
+    react: false,
+    typescript: false,
+    javascript: false,
+    python: false,
+    node: false,
+    next: false,
+    vite: false,
+    license: true,
+    version: false,
+    build: false,
   },
   features: [],
   techStack: { frontend: [], backend: [], database: [], tools: [] },
   packageManager: "npm",
   screenshots: [],
   advancedSections: {
-    toc: true, folderStructure: false, envVars: false, apiDocs: false,
-    usageExamples: false, roadmap: false, contributing: false, license: true, author: true,
+    toc: true,
+    folderStructure: false,
+    envVars: false,
+    apiDocs: false,
+    usageExamples: false,
+    roadmap: false,
+    contributing: false,
+    license: true,
+    author: true,
   },
   licenseType: "MIT",
   authorName: "",
@@ -44,15 +77,30 @@ const emptyInput: ReadmeInput = {
 
 const FAQ: FaqItem[] = [
   { q: "Is this free?", a: "Yes, README Studio is 100% free and open to use for any project." },
-  { q: "Where are my images stored?", a: "Images uploaded here are converted to local data URLs for preview. For a real GitHub repository, you should upload them directly to your repo (e.g., inside an `assets` folder) and update the links in the generated markdown." },
-  { q: "Does it autosave?", a: "Yes, your progress is automatically saved locally to your browser." },
-  { q: "Can I use custom badges?", a: "Currently, we provide a curated list of the most common badges. You can always add custom ones manually to the raw markdown after downloading." },
+  {
+    q: "Where are my images stored?",
+    a: "Images uploaded here are converted to local data URLs for preview. For a real GitHub repository, you should upload them directly to your repo (e.g., inside an `assets` folder) and update the links in the generated markdown.",
+  },
+  {
+    q: "Does it autosave?",
+    a: "Yes, your progress is automatically saved locally to your browser.",
+  },
+  {
+    q: "Can I use custom badges?",
+    a: "Currently, we provide a curated list of the most common badges. You can always add custom ones manually to the raw markdown after downloading.",
+  },
 ];
 
 const STEPS: HowToStep[] = [
-  { title: "Select a Template", body: "Start from scratch or use a preset (React, Fullstack, AI, Library)." },
+  {
+    title: "Select a Template",
+    body: "Start from scratch or use a preset (React, Fullstack, AI, Library).",
+  },
   { title: "Fill Details", body: "Add your project information, features, and tech stack." },
-  { title: "Add Images", body: "Upload screenshots or provide a logo URL to make your README stand out." },
+  {
+    title: "Add Images",
+    body: "Upload screenshots or provide a logo URL to make your README stand out.",
+  },
   { title: "Export", body: "Copy the raw markdown or download the README.md file directly." },
 ];
 
@@ -60,21 +108,43 @@ export const Route = createFileRoute("/tools/readme-generator")({
   head: () => ({
     ...buildPageHead({
       title: "README Studio: Professional GitHub Profile & Repo Generator | CampusAI Tools",
-      description: "Create a professional, structured README.md for your GitHub projects. Live markdown preview, automatic badges, screenshots, and more.",
+      description:
+        "Create a professional, structured README.md for your GitHub projects. Live markdown preview, automatic badges, screenshots, and more.",
       path: "/tools/readme-generator",
-      keywords: "readme generator, github readme maker, markdown generator, free readme tool, professional github repo, readme studio",
-      scripts: [jsonLdScript(faqJsonLd(FAQ)), jsonLdScript(howToJsonLd("How to use README Studio", STEPS))],
+      keywords:
+        "readme generator, github readme maker, markdown generator, free readme tool, professional github repo, readme studio",
+      scripts: [
+        jsonLdScript(faqJsonLd(FAQ)),
+        jsonLdScript(howToJsonLd("How to use README Studio", STEPS)),
+      ],
     }),
   }),
   component: ReadmeStudioPage,
 });
 
-function Checkbox({ label, checked, onChange }: { label: string, checked: boolean, onChange: (c: boolean) => void }) {
+function Checkbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (c: boolean) => void;
+}) {
   return (
     <label className="flex items-center gap-2 text-sm cursor-pointer hover:opacity-80 transition-opacity">
-      {checked ? <CheckSquare className="w-4 h-4 text-brand" /> : <Square className="w-4 h-4 text-muted-foreground" />}
+      {checked ? (
+        <CheckSquare className="w-4 h-4 text-brand" />
+      ) : (
+        <Square className="w-4 h-4 text-muted-foreground" />
+      )}
       <span>{label}</span>
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="sr-only" />
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="sr-only"
+      />
     </label>
   );
 }
@@ -96,7 +166,8 @@ function ReadmeStudioPage() {
     writeJsonToStorage(STORAGE_KEY, input);
   }, [loaded, input]);
 
-  const updateInput = (updates: Partial<ReadmeInput>) => setInput((prev) => ({ ...prev, ...updates }));
+  const updateInput = (updates: Partial<ReadmeInput>) =>
+    setInput((prev) => ({ ...prev, ...updates }));
 
   const handleClear = () => {
     setInput(emptyInput);
@@ -109,7 +180,7 @@ function ReadmeStudioPage() {
   };
 
   const handleScreenshotUpload = (files: File[]) => {
-    const newUrls = files.map(f => URL.createObjectURL(f));
+    const newUrls = files.map((f) => URL.createObjectURL(f));
     updateInput({ screenshots: [...input.screenshots, ...newUrls] });
     toast.success(`${files.length} screenshots added`);
   };
@@ -141,9 +212,18 @@ function ReadmeStudioPage() {
   return (
     <ToolShell
       eyebrow="Developer"
-      title={<>README <span className="text-gradient">Studio</span></>}
+      title={
+        <>
+          README <span className="text-gradient">Studio</span>
+        </>
+      }
       description="Create a professional, structured README.md for your projects with live markdown preview, automatic badges, and customizable sections."
-      actions={<ShareButton title="README Studio — CampusAI Tools" text="Create professional GitHub READMEs instantly." />}
+      actions={
+        <ShareButton
+          title="README Studio — CampusAI Tools"
+          text="Create professional GitHub READMEs instantly."
+        />
+      }
     >
       <div className="grid gap-6 lg:grid-cols-2">
         {/* LEFT: INPUT BUILDER */}
@@ -179,29 +259,54 @@ function ReadmeStudioPage() {
               <h3 className="font-semibold border-b border-border/40 pb-2">Project Details</h3>
               <div className="space-y-2">
                 <Label>Project Name</Label>
-                <Input value={input.projectName} onChange={(e) => updateInput({ projectName: e.target.value })} placeholder="e.g. Awesome Repo" />
+                <Input
+                  value={input.projectName}
+                  onChange={(e) => updateInput({ projectName: e.target.value })}
+                  placeholder="e.g. Awesome Repo"
+                />
               </div>
               <div className="space-y-2">
                 <Label>Short Description</Label>
-                <Input value={input.shortDescription} onChange={(e) => updateInput({ shortDescription: e.target.value })} placeholder="A fantastic new tool..." />
+                <Input
+                  value={input.shortDescription}
+                  onChange={(e) => updateInput({ shortDescription: e.target.value })}
+                  placeholder="A fantastic new tool..."
+                />
               </div>
               <div className="space-y-2">
                 <Label>Detailed Description</Label>
-                <Textarea value={input.detailedDescription} onChange={(e) => updateInput({ detailedDescription: e.target.value })} rows={3} placeholder="Explain what the project does in detail..." />
+                <Textarea
+                  value={input.detailedDescription}
+                  onChange={(e) => updateInput({ detailedDescription: e.target.value })}
+                  rows={3}
+                  placeholder="Explain what the project does in detail..."
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Logo URL</Label>
-                  <Input value={input.logoUrl} onChange={(e) => updateInput({ logoUrl: e.target.value })} placeholder="https://..." />
+                  <Input
+                    value={input.logoUrl}
+                    onChange={(e) => updateInput({ logoUrl: e.target.value })}
+                    placeholder="https://..."
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label>Demo URL</Label>
-                  <Input value={input.demoUrl} onChange={(e) => updateInput({ demoUrl: e.target.value })} placeholder="https://..." />
+                  <Input
+                    value={input.demoUrl}
+                    onChange={(e) => updateInput({ demoUrl: e.target.value })}
+                    placeholder="https://..."
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label>GitHub Repo URL</Label>
-                <Input value={input.githubRepo} onChange={(e) => updateInput({ githubRepo: e.target.value })} placeholder="https://github.com/user/repo" />
+                <Input
+                  value={input.githubRepo}
+                  onChange={(e) => updateInput({ githubRepo: e.target.value })}
+                  placeholder="https://github.com/user/repo"
+                />
               </div>
             </section>
 
@@ -214,7 +319,9 @@ function ReadmeStudioPage() {
                     key={badgeKey}
                     label={badgeKey.charAt(0).toUpperCase() + badgeKey.slice(1)}
                     checked={input.badges[badgeKey as keyof typeof input.badges]}
-                    onChange={(val) => updateInput({ badges: { ...input.badges, [badgeKey]: val } })}
+                    onChange={(val) =>
+                      updateInput({ badges: { ...input.badges, [badgeKey]: val } })
+                    }
                   />
                 ))}
               </div>
@@ -227,7 +334,11 @@ function ReadmeStudioPage() {
                 <Label>Features (one per line)</Label>
                 <Textarea
                   value={input.features.join("\n")}
-                  onChange={(e) => updateInput({ features: e.target.value.split("\n").filter(f => f.trim() !== "") })}
+                  onChange={(e) =>
+                    updateInput({
+                      features: e.target.value.split("\n").filter((f) => f.trim() !== ""),
+                    })
+                  }
                   rows={4}
                   placeholder="⚡ Fast performance&#10;🎨 Beautiful UI"
                 />
@@ -242,8 +353,18 @@ function ReadmeStudioPage() {
                   <Label className="capitalize">{cat} (comma separated)</Label>
                   <Input
                     value={input.techStack[cat].join(", ")}
-                    onChange={(e) => updateInput({ techStack: { ...input.techStack, [cat]: e.target.value.split(",").map(s => s.trim()).filter(Boolean) } })}
-                    placeholder={`e.g. ${cat === 'frontend' ? 'React, Vite' : cat === 'backend' ? 'Node, Express' : cat === 'database' ? 'MongoDB' : 'Docker'}`}
+                    onChange={(e) =>
+                      updateInput({
+                        techStack: {
+                          ...input.techStack,
+                          [cat]: e.target.value
+                            .split(",")
+                            .map((s) => s.trim())
+                            .filter(Boolean),
+                        },
+                      })
+                    }
+                    placeholder={`e.g. ${cat === "frontend" ? "React, Vite" : cat === "backend" ? "Node, Express" : cat === "database" ? "MongoDB" : "Docker"}`}
                   />
                 </div>
               ))}
@@ -256,7 +377,9 @@ function ReadmeStudioPage() {
                 <Label>Package Manager</Label>
                 <select
                   value={input.packageManager}
-                  onChange={(e) => updateInput({ packageManager: e.target.value as any })}
+                  onChange={(e) =>
+                    updateInput({ packageManager: e.target.value as ReadmeInput["packageManager"] })
+                  }
                   className="w-full h-9 rounded-md border border-input bg-surface-2/40 px-3 py-1 text-sm shadow-sm outline-none focus:ring-1 focus:ring-brand"
                 >
                   <option value="npm">npm</option>
@@ -278,18 +401,25 @@ function ReadmeStudioPage() {
               {input.screenshots.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
                   {input.screenshots.map((url, idx) => (
-                    <div key={idx} className="relative w-16 h-16 rounded overflow-hidden border border-border">
-                       <img src={url} alt={`Screenshot ${idx}`} className="w-full h-full object-cover" />
-                       <button
-                         onClick={() => {
-                           const s = [...input.screenshots];
-                           s.splice(idx, 1);
-                           updateInput({ screenshots: s });
-                         }}
-                         className="absolute top-0 right-0 bg-black/60 text-white text-[10px] w-4 h-4 flex items-center justify-center hover:bg-destructive"
-                       >
-                         x
-                       </button>
+                    <div
+                      key={idx}
+                      className="relative w-16 h-16 rounded overflow-hidden border border-border"
+                    >
+                      <img
+                        src={url}
+                        alt={`Screenshot ${idx}`}
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        onClick={() => {
+                          const s = [...input.screenshots];
+                          s.splice(idx, 1);
+                          updateInput({ screenshots: s });
+                        }}
+                        className="absolute top-0 right-0 bg-black/60 text-white text-[10px] w-4 h-4 flex items-center justify-center hover:bg-destructive"
+                      >
+                        x
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -303,9 +433,15 @@ function ReadmeStudioPage() {
                 {Object.keys(input.advancedSections).map((secKey) => (
                   <Checkbox
                     key={secKey}
-                    label={secKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                    label={secKey
+                      .replace(/([A-Z])/g, " $1")
+                      .replace(/^./, (str) => str.toUpperCase())}
                     checked={input.advancedSections[secKey as keyof typeof input.advancedSections]}
-                    onChange={(val) => updateInput({ advancedSections: { ...input.advancedSections, [secKey]: val } })}
+                    onChange={(val) =>
+                      updateInput({
+                        advancedSections: { ...input.advancedSections, [secKey]: val },
+                      })
+                    }
                   />
                 ))}
               </div>
@@ -316,7 +452,11 @@ function ReadmeStudioPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Author Name</Label>
-                  <Input value={input.authorName} onChange={(e) => updateInput({ authorName: e.target.value })} placeholder="Jane Doe" />
+                  <Input
+                    value={input.authorName}
+                    onChange={(e) => updateInput({ authorName: e.target.value })}
+                    placeholder="Jane Doe"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label>License Type</Label>
@@ -345,7 +485,9 @@ function ReadmeStudioPage() {
                   type="button"
                   onClick={() => setView("preview")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-xs transition-colors ${
-                    view === "preview" ? "bg-foreground text-background font-medium" : "text-muted-foreground hover:text-foreground"
+                    view === "preview"
+                      ? "bg-foreground text-background font-medium"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <Eye className="h-3.5 w-3.5" />
@@ -355,7 +497,9 @@ function ReadmeStudioPage() {
                   type="button"
                   onClick={() => setView("raw")}
                   className={`flex items-center gap-1.5 px-3 py-1.5 text-xs transition-colors ${
-                    view === "raw" ? "bg-foreground text-background font-medium" : "text-muted-foreground hover:text-foreground"
+                    view === "raw"
+                      ? "bg-foreground text-background font-medium"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   <FileText className="h-3.5 w-3.5" />
@@ -384,7 +528,8 @@ function ReadmeStudioPage() {
                 spellCheck={false}
               />
             ) : (
-              <div className="p-8 prose prose-invert max-w-none 
+              <div
+                className="p-8 prose prose-invert max-w-none 
                 prose-headings:border-b prose-headings:border-[#21262d] prose-headings:pb-2 prose-headings:font-semibold
                 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
                 prose-a:text-[#58a6ff] prose-a:no-underline hover:prose-a:underline

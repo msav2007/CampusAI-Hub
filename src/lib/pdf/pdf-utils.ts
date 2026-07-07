@@ -108,17 +108,17 @@ export async function deletePdfPages(file: File, pagesToRemove: number[]): Promi
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
   const numPages = pdf.getPageCount();
-  
+
   // Create a sorted set of 0-indexed pages to remove
-  const toRemove = new Set(pagesToRemove.map(p => p - 1));
-  
+  const toRemove = new Set(pagesToRemove.map((p) => p - 1));
+
   // We must iterate backwards when removing pages in place to not mess up indices
   for (let i = numPages - 1; i >= 0; i--) {
     if (toRemove.has(i)) {
       pdf.removePage(i);
     }
   }
-  
+
   if (pdf.getPageCount() === 0) {
     throw new Error("Cannot delete all pages from the document.");
   }
@@ -142,15 +142,19 @@ export async function reorderPdfPages(file: File, newOrderIndices: number[]): Pr
   return new Blob([newPdfBytes as unknown as BlobPart], { type: "application/pdf" });
 }
 
-export async function rotatePdf(file: File, rotationDegrees: number, targetPages?: number[]): Promise<Blob> {
+export async function rotatePdf(
+  file: File,
+  rotationDegrees: number,
+  targetPages?: number[],
+): Promise<Blob> {
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
   const numPages = pdf.getPageCount();
 
   const pagesToRotate = new Set(
-    targetPages && targetPages.length > 0 
-      ? targetPages.map(p => p - 1) 
-      : Array.from({ length: numPages }, (_, i) => i)
+    targetPages && targetPages.length > 0
+      ? targetPages.map((p) => p - 1)
+      : Array.from({ length: numPages }, (_, i) => i),
   );
 
   for (let i = 0; i < numPages; i++) {
@@ -166,16 +170,21 @@ export async function rotatePdf(file: File, rotationDegrees: number, targetPages
 }
 
 export async function watermarkPdf(
-  file: File, 
-  text: string, 
-  options: { opacity: number, size: number, colorHex: string, placement: "center" | "bottom-right" }
+  file: File,
+  text: string,
+  options: {
+    opacity: number;
+    size: number;
+    colorHex: string;
+    placement: "center" | "bottom-right";
+  },
 ): Promise<Blob> {
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
-  
+
   const font = await pdf.embedFont(StandardFonts.HelveticaBold);
   const pages = pdf.getPages();
-  
+
   // Parse color (e.g. #FF0000)
   const hex = options.colorHex.replace("#", "");
   const r = parseInt(hex.substring(0, 2), 16) / 255;
@@ -186,10 +195,10 @@ export async function watermarkPdf(
     const { width, height } = page.getSize();
     const textWidth = font.widthOfTextAtSize(text, options.size);
     const textHeight = font.heightAtSize(options.size);
-    
+
     let x = 0;
     let y = 0;
-    
+
     if (options.placement === "center") {
       x = width / 2 - textWidth / 2;
       y = height / 2 - textHeight / 2;
@@ -197,7 +206,7 @@ export async function watermarkPdf(
       x = width - textWidth - 20;
       y = 20;
     }
-    
+
     page.drawText(text, {
       x,
       y,

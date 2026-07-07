@@ -18,25 +18,34 @@ export function ResumePreview({ data }: { data: ResumeData }) {
 
   const getFontSize = () => {
     switch (settings?.fontSize) {
-      case "small": return "text-[11px] leading-snug";
-      case "large": return "text-[14px] leading-relaxed";
-      default: return "text-[12px] leading-normal";
+      case "small":
+        return "text-[11px] leading-snug";
+      case "large":
+        return "text-[14px] leading-relaxed";
+      default:
+        return "text-[12px] leading-normal";
     }
   };
 
   const getSpacing = () => {
     switch (settings?.spacing) {
-      case "compact": return "mb-2 space-y-2";
-      case "spacious": return "mb-6 space-y-5";
-      default: return "mb-4 space-y-3";
+      case "compact":
+        return "mb-2 space-y-2";
+      case "spacious":
+        return "mb-6 space-y-5";
+      default:
+        return "mb-4 space-y-3";
     }
   };
 
   const getHeaderSpacing = () => {
     switch (settings?.spacing) {
-      case "compact": return "mb-3";
-      case "spacious": return "mb-8";
-      default: return "mb-5";
+      case "compact":
+        return "mb-3";
+      case "spacious":
+        return "mb-8";
+      default:
+        return "mb-5";
     }
   };
 
@@ -93,7 +102,9 @@ export function ResumePreview({ data }: { data: ResumeData }) {
       {/* Experience */}
       {data.experience.length > 0 && (
         <section className={spacing}>
-          <h2 className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}>
+          <h2
+            className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}
+          >
             Experience
           </h2>
           <div className={spacing}>
@@ -127,7 +138,9 @@ export function ResumePreview({ data }: { data: ResumeData }) {
       {/* Education */}
       {data.education.length > 0 && (
         <section className={spacing}>
-          <h2 className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}>
+          <h2
+            className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}
+          >
             Education
           </h2>
           <div className={spacing}>
@@ -163,7 +176,9 @@ export function ResumePreview({ data }: { data: ResumeData }) {
       {/* Projects */}
       {data.projects.length > 0 && (
         <section className={spacing}>
-          <h2 className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}>
+          <h2
+            className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}
+          >
             Projects
           </h2>
           <div className={spacing}>
@@ -173,7 +188,10 @@ export function ResumePreview({ data }: { data: ResumeData }) {
                   <div className="flex items-center gap-2">
                     <span>{proj.name}</span>
                     {proj.link && (
-                      <a href={`https://${proj.link}`} className="text-xs font-normal opacity-80 hover:underline">
+                      <a
+                        href={`https://${proj.link}`}
+                        className="text-xs font-normal opacity-80 hover:underline"
+                      >
                         {proj.link}
                       </a>
                     )}
@@ -199,16 +217,37 @@ export function ResumePreview({ data }: { data: ResumeData }) {
       )}
 
       {/* Skills */}
-      {(data.skills.languages || data.skills.frameworks || data.skills.tools || data.skills.other) && (
+      {(data.skills.languages ||
+        data.skills.frameworks ||
+        data.skills.tools ||
+        data.skills.other) && (
         <section className={spacing}>
-          <h2 className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}>
+          <h2
+            className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}
+          >
             Skills
           </h2>
           <div className="space-y-1 opacity-90">
-            {data.skills.languages && <div><span className="font-bold">Languages:</span> {data.skills.languages}</div>}
-            {data.skills.frameworks && <div><span className="font-bold">Frameworks:</span> {data.skills.frameworks}</div>}
-            {data.skills.tools && <div><span className="font-bold">Tools:</span> {data.skills.tools}</div>}
-            {data.skills.other && <div><span className="font-bold">Other:</span> {data.skills.other}</div>}
+            {data.skills.languages && (
+              <div>
+                <span className="font-bold">Languages:</span> {data.skills.languages}
+              </div>
+            )}
+            {data.skills.frameworks && (
+              <div>
+                <span className="font-bold">Frameworks:</span> {data.skills.frameworks}
+              </div>
+            )}
+            {data.skills.tools && (
+              <div>
+                <span className="font-bold">Tools:</span> {data.skills.tools}
+              </div>
+            )}
+            {data.skills.other && (
+              <div>
+                <span className="font-bold">Other:</span> {data.skills.other}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -216,7 +255,9 @@ export function ResumePreview({ data }: { data: ResumeData }) {
       {/* Certifications */}
       {data.certifications.length > 0 && (
         <section className={spacing}>
-          <h2 className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}>
+          <h2
+            className={`mb-2 border-b-2 ${colors.border} pb-1 text-lg font-bold uppercase tracking-wider ${colors.heading}`}
+          >
             Certifications
           </h2>
           <div className={spacing}>

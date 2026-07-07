@@ -7,17 +7,17 @@ export type ReadmeInput = {
   logoUrl: string;
   demoUrl: string;
   githubRepo: string;
-  
+
   badges: Record<string, boolean>;
-  
+
   features: string[];
-  
+
   techStack: Record<TechCategory, string[]>;
-  
+
   packageManager: "npm" | "yarn" | "pnpm" | "bun";
-  
+
   screenshots: string[];
-  
+
   advancedSections: {
     toc: boolean;
     folderStructure: boolean;
@@ -37,11 +37,12 @@ export type ReadmeInput = {
 export const DEFAULT_README_INPUT: ReadmeInput = {
   projectName: "Awesome Project",
   shortDescription: "A fantastic new tool to help developers build faster and smarter.",
-  detailedDescription: "This project solves the complex problem of X by utilizing Y. It provides a seamless developer experience with built-in tools for Z, ensuring that your workflow is uninterrupted and highly productive.",
+  detailedDescription:
+    "This project solves the complex problem of X by utilizing Y. It provides a seamless developer experience with built-in tools for Z, ensuring that your workflow is uninterrupted and highly productive.",
   logoUrl: "",
   demoUrl: "https://awesome-project.demo.com",
   githubRepo: "https://github.com/username/awesome-project",
-  
+
   badges: {
     react: true,
     typescript: true,
@@ -53,25 +54,25 @@ export const DEFAULT_README_INPUT: ReadmeInput = {
     node: false,
     python: false,
   },
-  
+
   features: [
     "⚡ Fast performance and minimal bundle size",
     "🎨 Responsive design with modern UI principles",
     "♿ Accessible components following WAI-ARIA standards",
     "🌙 Built-in dark mode support",
   ],
-  
+
   techStack: {
     frontend: ["React", "TypeScript", "Tailwind CSS"],
     backend: ["Node.js", "Express"],
     database: ["PostgreSQL", "Prisma"],
     tools: ["Docker", "GitHub Actions"],
   },
-  
+
   packageManager: "npm",
-  
+
   screenshots: [],
-  
+
   advancedSections: {
     toc: true,
     folderStructure: true,
@@ -89,20 +90,41 @@ export const DEFAULT_README_INPUT: ReadmeInput = {
 };
 
 export const BADGE_URLS: Record<string, { label: string; url: string }> = {
-  react: { label: "React", url: "https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" },
-  typescript: { label: "TypeScript", url: "https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" },
-  javascript: { label: "JavaScript", url: "https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" },
-  python: { label: "Python", url: "https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" },
-  node: { label: "Node.js", url: "https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" },
-  next: { label: "Next.js", url: "https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white" },
-  vite: { label: "Vite", url: "https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" },
+  react: {
+    label: "React",
+    url: "https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB",
+  },
+  typescript: {
+    label: "TypeScript",
+    url: "https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white",
+  },
+  javascript: {
+    label: "JavaScript",
+    url: "https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E",
+  },
+  python: {
+    label: "Python",
+    url: "https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54",
+  },
+  node: {
+    label: "Node.js",
+    url: "https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white",
+  },
+  next: {
+    label: "Next.js",
+    url: "https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white",
+  },
+  vite: {
+    label: "Vite",
+    url: "https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white",
+  },
 };
 
 export function generateReadme(input: ReadmeInput): string {
   const repoPath = input.githubRepo
     .replace(/^https?:\/\/(www\.)?github\.com\//, "")
     .replace(/\/$/, "");
-  
+
   let markdown = "";
 
   // HEADER
@@ -115,7 +137,8 @@ export function generateReadme(input: ReadmeInput): string {
   markdown += `    ${input.shortDescription || "A short description of the project"}\n`;
   if (input.demoUrl || input.githubRepo) {
     markdown += `    <br />\n`;
-    if (input.demoUrl) markdown += `    <a href="${input.demoUrl}"><strong>View Demo »</strong></a>\n`;
+    if (input.demoUrl)
+      markdown += `    <a href="${input.demoUrl}"><strong>View Demo »</strong></a>\n`;
     if (input.demoUrl && input.githubRepo) markdown += `    <br />\n    <br />\n`;
     if (input.githubRepo) {
       markdown += `    <a href="${input.githubRepo}/issues/new?labels=bug">Report Bug</a>\n`;
@@ -124,7 +147,7 @@ export function generateReadme(input: ReadmeInput): string {
     }
   }
   markdown += `  </p>\n`;
-  
+
   // BADGES
   let badgeString = "";
   Object.keys(input.badges).forEach((key) => {
@@ -158,7 +181,7 @@ export function generateReadme(input: ReadmeInput): string {
   // SCREENSHOTS
   if (input.screenshots.length > 0) {
     markdown += `### Screenshots\n\n`;
-    input.screenshots.forEach(url => {
+    input.screenshots.forEach((url) => {
       markdown += `<img src="${url}" alt="Screenshot" width="100%">\n\n`;
     });
   }
@@ -178,18 +201,22 @@ export function generateReadme(input: ReadmeInput): string {
   }
 
   // TECH STACK
-  if (Object.values(input.techStack).some(cat => cat.length > 0)) {
+  if (Object.values(input.techStack).some((cat) => cat.length > 0)) {
     markdown += `## Tech Stack\n\n`;
-    if (input.techStack.frontend.length) markdown += `**Client:** ${input.techStack.frontend.join(", ")}\n\n`;
-    if (input.techStack.backend.length) markdown += `**Server:** ${input.techStack.backend.join(", ")}\n\n`;
-    if (input.techStack.database.length) markdown += `**Database:** ${input.techStack.database.join(", ")}\n\n`;
-    if (input.techStack.tools.length) markdown += `**Tools:** ${input.techStack.tools.join(", ")}\n\n`;
+    if (input.techStack.frontend.length)
+      markdown += `**Client:** ${input.techStack.frontend.join(", ")}\n\n`;
+    if (input.techStack.backend.length)
+      markdown += `**Server:** ${input.techStack.backend.join(", ")}\n\n`;
+    if (input.techStack.database.length)
+      markdown += `**Database:** ${input.techStack.database.join(", ")}\n\n`;
+    if (input.techStack.tools.length)
+      markdown += `**Tools:** ${input.techStack.tools.join(", ")}\n\n`;
   }
 
   // FEATURES
   if (input.features.length > 0) {
     markdown += `## Features\n\n`;
-    input.features.forEach(f => {
+    input.features.forEach((f) => {
       markdown += `- ${f}\n`;
     });
     markdown += `\n`;
@@ -198,7 +225,7 @@ export function generateReadme(input: ReadmeInput): string {
   // GETTING STARTED
   markdown += `## Getting Started\n\n`;
   markdown += `To get a local copy up and running follow these simple steps.\n\n`;
-  
+
   if (input.advancedSections.envVars) {
     markdown += `### Prerequisites\n\n`;
     markdown += `This project requires certain environment variables. Create a \`.env\` file in the root directory.\n`;

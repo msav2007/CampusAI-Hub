@@ -65,7 +65,7 @@ export function ResumeForm({
   const reorderArrayItem = <K extends "education" | "experience" | "projects" | "certifications">(
     field: K,
     index: number,
-    direction: -1 | 1
+    direction: -1 | 1,
   ) => {
     const newArray = [...data[field]];
     const target = index + direction;
@@ -221,13 +221,30 @@ export function ResumeForm({
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
             <div className="absolute right-2 top-2 flex gap-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("experience", index, -1)} disabled={index === 0}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("experience", index, -1)}
+                disabled={index === 0}
+              >
                 ↑
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("experience", index, 1)} disabled={index === data.experience.length - 1}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("experience", index, 1)}
+                disabled={index === data.experience.length - 1}
+              >
                 ↓
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("experience", index)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                onClick={() => removeArrayItem("experience", index)}
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -326,13 +343,30 @@ export function ResumeForm({
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
             <div className="absolute right-2 top-2 flex gap-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("education", index, -1)} disabled={index === 0}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("education", index, -1)}
+                disabled={index === 0}
+              >
                 ↑
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("education", index, 1)} disabled={index === data.education.length - 1}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("education", index, 1)}
+                disabled={index === data.education.length - 1}
+              >
                 ↓
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("education", index)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                onClick={() => removeArrayItem("education", index)}
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -437,13 +471,30 @@ export function ResumeForm({
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
             <div className="absolute right-2 top-2 flex gap-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("projects", index, -1)} disabled={index === 0}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("projects", index, -1)}
+                disabled={index === 0}
+              >
                 ↑
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("projects", index, 1)} disabled={index === data.projects.length - 1}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("projects", index, 1)}
+                disabled={index === data.projects.length - 1}
+              >
                 ↓
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("projects", index)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                onClick={() => removeArrayItem("projects", index)}
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
@@ -567,13 +618,30 @@ export function ResumeForm({
             className="relative space-y-4 rounded-xl border border-border/50 bg-surface-2/30 p-4"
           >
             <div className="absolute right-2 top-2 flex gap-1">
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("certifications", index, -1)} disabled={index === 0}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("certifications", index, -1)}
+                disabled={index === 0}
+              >
                 ↑
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-brand" onClick={() => reorderArrayItem("certifications", index, 1)} disabled={index === data.certifications.length - 1}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-brand"
+                onClick={() => reorderArrayItem("certifications", index, 1)}
+                disabled={index === data.certifications.length - 1}
+              >
                 ↓
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeArrayItem("certifications", index)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                onClick={() => removeArrayItem("certifications", index)}
+              >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>

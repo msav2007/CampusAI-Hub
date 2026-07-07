@@ -72,6 +72,6 @@ export const createDefaultResume = (): ResumeData => ({
   settings: {
     theme: "classic",
     fontSize: "medium",
-    spacing: "normal"
-  }
+    spacing: "normal",
+  },
 });

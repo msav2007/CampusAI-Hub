@@ -20,7 +20,10 @@ function isPdfFile(file: File) {
 }
 
 function isWordFile(file: File) {
-  return file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.name.toLowerCase().endsWith(".docx");
+  return (
+    file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+    file.name.toLowerCase().endsWith(".docx")
+  );
 }
 
 function isTextFile(file: File) {
@@ -54,7 +57,9 @@ async function loadPdfJs() {
   return { getDocument };
 }
 
-function normalizePdfPageText(items: Array<{ str?: string; hasEOL?: boolean; transform?: number[] }>) {
+function normalizePdfPageText(
+  items: Array<{ str?: string; hasEOL?: boolean; transform?: number[] }>,
+) {
   let pageText = "";
   let lastY: number | undefined;
 
@@ -62,7 +67,8 @@ function normalizePdfPageText(items: Array<{ str?: string; hasEOL?: boolean; tra
     const chunk = item.str?.trim();
     if (!chunk) continue;
     const y = item.transform?.[5];
-    const lineBreak = item.hasEOL || (lastY !== undefined && y !== undefined && Math.abs(lastY - y) > 4);
+    const lineBreak =
+      item.hasEOL || (lastY !== undefined && y !== undefined && Math.abs(lastY - y) > 4);
     if (pageText.length > 0) pageText += lineBreak ? "\n" : " ";
     pageText += chunk;
     lastY = y;
@@ -73,19 +79,23 @@ function normalizePdfPageText(items: Array<{ str?: string; hasEOL?: boolean; tra
 async function extractPdfFile(file: File): Promise<ExtractedResume> {
   const { getDocument } = await loadPdfJs();
   const data = new Uint8Array(await file.arrayBuffer());
-  const pdf = await getDocument({ data, useWorkerFetch: false } as any).promise;
+  const pdf = await getDocument({ data, useWorkerFetch: false } as Record<string, unknown>).promise;
   const pages: string[] = [];
 
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     const page = await pdf.getPage(pageNumber);
     const content = await page.getTextContent();
-    const pageText = normalizePdfPageText(content.items as Array<{ str?: string; hasEOL?: boolean; transform?: number[] }>);
+    const pageText = normalizePdfPageText(
+      content.items as Array<{ str?: string; hasEOL?: boolean; transform?: number[] }>,
+    );
     if (pageText.trim()) pages.push(pageText);
   }
 
   const text = sanitizeExtractedText(pages.join("\n\n"));
   if (!text) {
-    throw new Error("We could not extract readable text from this PDF. Please upload a text-based PDF.");
+    throw new Error(
+      "We could not extract readable text from this PDF. Please upload a text-based PDF.",
+    );
   }
   return { text, pageCount: pdf.numPages, source: "pdf" };
 }

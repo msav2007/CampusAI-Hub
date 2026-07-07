@@ -28,7 +28,9 @@ describe("calculateCgpaStats", () => {
   });
 
   it("handles empty or zero-credit semesters safely", () => {
-    const stats = calculateCgpaStats([{ id: "sem-1", subjects: [{ credits: 0, points: 10, grade: "O" }] }]);
+    const stats = calculateCgpaStats([
+      { id: "sem-1", subjects: [{ credits: 0, points: 10, grade: "O" }] },
+    ]);
 
     expect(stats.totalCredits).toBe(0);
     expect(stats.cgpa).toBe(0);

@@ -28,7 +28,7 @@ export function JsonTree({ data, searchQuery = "", isRoot = true, name }: JsonTr
             </mark>
           ) : (
             part
-          )
+          ),
         )}
       </>
     );
@@ -48,7 +48,7 @@ export function JsonTree({ data, searchQuery = "", isRoot = true, name }: JsonTr
       }
       return false;
     },
-    [query]
+    [query],
   );
 
   React.useEffect(() => {
@@ -130,16 +130,26 @@ export function JsonTree({ data, searchQuery = "", isRoot = true, name }: JsonTr
         <div className="pl-4 border-l border-border/40 ml-[7px]">
           {isArray
             ? (data as unknown[]).map((val, i) => (
-                <JsonTree key={i} data={val} name={String(i)} searchQuery={searchQuery} isRoot={false} />
+                <JsonTree
+                  key={i}
+                  data={val}
+                  name={String(i)}
+                  searchQuery={searchQuery}
+                  isRoot={false}
+                />
               ))
             : keys.map((key) => (
-                <JsonTree key={key} data={(data as Record<string, unknown>)[key]} name={key} searchQuery={searchQuery} isRoot={false} />
+                <JsonTree
+                  key={key}
+                  data={(data as Record<string, unknown>)[key]}
+                  name={key}
+                  searchQuery={searchQuery}
+                  isRoot={false}
+                />
               ))}
         </div>
       )}
-      {expanded && !isEmpty && (
-        <div className="text-muted-foreground ml-[2px]">{bracketClose}</div>
-      )}
+      {expanded && !isEmpty && <div className="text-muted-foreground ml-[2px]">{bracketClose}</div>}
     </div>
   );
 }
