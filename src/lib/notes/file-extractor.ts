@@ -1,5 +1,4 @@
 import { extractTextFromPdf } from "@/lib/pdf/pdf-utils";
-import mammoth from "mammoth";
 
 export async function extractTextFromFile(file: File): Promise<string> {
   const type = file.type;
@@ -16,6 +15,7 @@ export async function extractTextFromFile(file: File): Promise<string> {
       name.endsWith(".docx")
     ) {
       const arrayBuffer = await file.arrayBuffer();
+      const mammoth = (await import("mammoth")).default;
       const result = await mammoth.extractRawText({ arrayBuffer });
       return result.value;
     }

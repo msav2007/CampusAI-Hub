@@ -1,5 +1,3 @@
-import mammoth from "mammoth";
-
 type ExtractedResume = {
   text: string;
   pageCount: number;
@@ -40,6 +38,7 @@ async function extractTextFile(file: File): Promise<ExtractedResume> {
 
 async function extractDocxFile(file: File): Promise<ExtractedResume> {
   const arrayBuffer = await file.arrayBuffer();
+  const mammoth = (await import("mammoth")).default;
   const result = await mammoth.extractRawText({ arrayBuffer });
   const text = sanitizeExtractedText(result.value);
   if (!text) {

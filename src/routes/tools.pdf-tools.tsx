@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { PDFDocument, StandardFonts, rgb, degrees as pdfLibDegrees } from "pdf-lib";
-import * as pdfjsLib from "pdfjs-dist";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 
 import { ToolShell } from "@/components/site/ToolShell";
 import { Button } from "@/components/ui/button";
@@ -41,8 +41,6 @@ import {
   getPdfInfo,
 } from "@/lib/pdf/pdf-utils";
 import type { PDFInfo } from "@/lib/pdf/types";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = "/assets/pdf.worker.min.mjs";
 
 export const Route = createFileRoute("/tools/pdf-tools")({
   head: () => ({
@@ -169,7 +167,7 @@ function PdfPreview({ file, info }: { file: File; info?: PDFInfo | null }) {
 // --- VIEWER & EDITOR (VISUAL) ---
 function ViewerEditorTool() {
   const [file, setFile] = useState<File | null>(null);
-  const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
+  const [pdfDoc, setPdfDoc] = useState<PDFDocumentProxy | null>(null);
   const [pageNum, setPageNum] = useState(1);
   const [scale, setScale] = useState(1.0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -189,6 +187,8 @@ function ViewerEditorTool() {
     }
     setFile(files[0]);
     try {
+      const pdfjsLib = await import("pdfjs-dist");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "/assets/pdf.worker.min.mjs";
       const arrayBuffer = await files[0].arrayBuffer();
       const doc = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
       setPdfDoc(doc);
@@ -209,7 +209,7 @@ function ViewerEditorTool() {
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
-        await page.render({ canvasContext: context, viewport }).promise;
+        await page.render({ canvasContext: context, viewport } as any).promise;
 
         edits.forEach((e) => {
           context.font = `${e.size * scale}px Helvetica`;

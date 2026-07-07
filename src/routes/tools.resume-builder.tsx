@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import { Download, LayoutTemplate, Briefcase, GraduationCap } from "lucide-react";
-import html2pdf from "html2pdf.js";
+
 import { toast } from "sonner";
 
 import { ToolShell } from "@/components/site/ToolShell";
@@ -63,6 +63,7 @@ function ResumeBuilderPage() {
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" as const },
       };
 
+      const html2pdf = (await import("html2pdf.js")).default;
       await html2pdf().set(opt).from(element).save();
       toast.success("PDF Downloaded successfully!", { id: "pdf-export" });
     } catch (err) {
