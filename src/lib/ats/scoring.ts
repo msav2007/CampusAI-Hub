@@ -36,17 +36,147 @@ export type AtsAnalysis = {
   wordCount: number;
 };
 
-const STOP_WORDS = new Set(["a","an","and","are","as","at","be","by","for","from","has","have","in","is","it","of","on","or","that","the","to","with","will","you","your","we","our","they","their","role","team","work","working","looking","candidate","candidates","experience","years","year"]);
-const SKILLS_DB = ["react","typescript","javascript","node","nodejs","nextjs","tailwind","html","css","python","java","cpp","csharp","sql","mysql","postgresql","mongodb","firebase","aws","azure","gcp","docker","kubernetes","git","rest","graphql","api","testing","vitest","jest","playwright","cypress","agile","scrum","data analysis","machine learning","deep learning","nlp","power bi","tableau","excel","figma","product management","project management","communication","leadership","problem solving","teamwork"];
-const ACTION_VERBS = ["built","created","designed","developed","delivered","improved","implemented","launched","led","managed","optimized","reduced","scaled","shipped","spearheaded","orchestrated","engineered","achieved","resolved","modernized"];
-const BAD_PHRASES = ["responsible for","duties included","helped with","worked on","assisted in","team player","hard worker","detail-oriented"];
+const STOP_WORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "are",
+  "as",
+  "at",
+  "be",
+  "by",
+  "for",
+  "from",
+  "has",
+  "have",
+  "in",
+  "is",
+  "it",
+  "of",
+  "on",
+  "or",
+  "that",
+  "the",
+  "to",
+  "with",
+  "will",
+  "you",
+  "your",
+  "we",
+  "our",
+  "they",
+  "their",
+  "role",
+  "team",
+  "work",
+  "working",
+  "looking",
+  "candidate",
+  "candidates",
+  "experience",
+  "years",
+  "year",
+]);
+const SKILLS_DB = [
+  "react",
+  "typescript",
+  "javascript",
+  "node",
+  "nodejs",
+  "nextjs",
+  "tailwind",
+  "html",
+  "css",
+  "python",
+  "java",
+  "cpp",
+  "csharp",
+  "sql",
+  "mysql",
+  "postgresql",
+  "mongodb",
+  "firebase",
+  "aws",
+  "azure",
+  "gcp",
+  "docker",
+  "kubernetes",
+  "git",
+  "rest",
+  "graphql",
+  "api",
+  "testing",
+  "vitest",
+  "jest",
+  "playwright",
+  "cypress",
+  "agile",
+  "scrum",
+  "data analysis",
+  "machine learning",
+  "deep learning",
+  "nlp",
+  "power bi",
+  "tableau",
+  "excel",
+  "figma",
+  "product management",
+  "project management",
+  "communication",
+  "leadership",
+  "problem solving",
+  "teamwork",
+];
+const ACTION_VERBS = [
+  "built",
+  "created",
+  "designed",
+  "developed",
+  "delivered",
+  "improved",
+  "implemented",
+  "launched",
+  "led",
+  "managed",
+  "optimized",
+  "reduced",
+  "scaled",
+  "shipped",
+  "spearheaded",
+  "orchestrated",
+  "engineered",
+  "achieved",
+  "resolved",
+  "modernized",
+];
+const BAD_PHRASES = [
+  "responsible for",
+  "duties included",
+  "helped with",
+  "worked on",
+  "assisted in",
+  "team player",
+  "hard worker",
+  "detail-oriented",
+];
 
 export function normalizeAtsText(text: string) {
-  return text.toLowerCase().replace(/node\.js/g, "nodejs").replace(/next\.js/g, "nextjs").replace(/c\+\+/g, "cpp").replace(/c#/g, "csharp").replace(/[^\p{L}\p{N}\s%+#.-]+/gu, " ").replace(/\s+/g, " ").trim();
+  return text
+    .toLowerCase()
+    .replace(/node\.js/g, "nodejs")
+    .replace(/next\.js/g, "nextjs")
+    .replace(/c\+\+/g, "cpp")
+    .replace(/c#/g, "csharp")
+    .replace(/[^\p{L}\p{N}\s%+#.-]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function tokenize(text: string) {
-  return normalizeAtsText(text).split(" ").map((t) => t.trim()).filter(Boolean);
+  return normalizeAtsText(text)
+    .split(" ")
+    .map((t) => t.trim())
+    .filter(Boolean);
 }
 
 function extractTargetKeywords(jobDescription: string) {
@@ -56,19 +186,26 @@ function extractTargetKeywords(jobDescription: string) {
     if (t.length < 3 || STOP_WORDS.has(t)) continue;
     freq.set(t, (freq.get(t) || 0) + 1);
   }
-  const ranked = [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20).map((x) => x[0]);
-  const matchedSkills = SKILLS_DB.filter((s) => normalizeAtsText(jobDescription).includes(normalizeAtsText(s)));
+  const ranked = [...freq.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 20)
+    .map((x) => x[0]);
+  const matchedSkills = SKILLS_DB.filter((s) =>
+    normalizeAtsText(jobDescription).includes(normalizeAtsText(s)),
+  );
   return [...new Set([...matchedSkills, ...ranked])].slice(0, 25);
 }
 
 function parseResumeInfo(text: string): ParsedInfo {
-  const lines = text.split('\n').slice(0, 20); // usually at top
-  const topText = lines.join('\n');
-  
+  const lines = text.split("\n").slice(0, 20); // usually at top
+  const topText = lines.join("\n");
+
   const emailMatch = text.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
   const phoneMatch = text.match(/\b(?:\+?\d{1,3}[-. ]?)?\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4}\b/);
-  const linkMatches = text.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g);
-  
+  const linkMatches = text.match(
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g,
+  );
+
   // Basic name heuristic: first line that is short and has no weird chars
   let name = "";
   for (const line of lines) {
@@ -82,7 +219,9 @@ function parseResumeInfo(text: string): ParsedInfo {
   const normResume = normalizeAtsText(text);
   const hasExperience = /\b(experience|employment|work history)\b/i.test(normResume);
   const hasProjects = /\b(projects|project experience)\b/i.test(normResume);
-  const hasEducation = /\b(education|academics|qualification|university|college|degree)\b/i.test(normResume);
+  const hasEducation = /\b(education|academics|qualification|university|college|degree)\b/i.test(
+    normResume,
+  );
   const hasSkills = /\b(skills|technologies|core competencies)\b/i.test(normResume);
 
   return {
@@ -95,7 +234,7 @@ function parseResumeInfo(text: string): ParsedInfo {
       projects: hasProjects,
       education: hasEducation,
       experience: hasExperience,
-    }
+    },
   };
 }
 
@@ -103,12 +242,16 @@ export function analyzeResumeAgainstJob(resumeText: string, jobDescription: stri
   const normResume = normalizeAtsText(resumeText);
   const parsed = parseResumeInfo(resumeText);
 
-  const jdKeywords = jobDescription ? extractTargetKeywords(jobDescription) : SKILLS_DB.slice(0, 15);
+  const jdKeywords = jobDescription
+    ? extractTargetKeywords(jobDescription)
+    : SKILLS_DB.slice(0, 15);
   const matchedKeywords = jdKeywords.filter((k) => normResume.includes(normalizeAtsText(k)));
   const missingKeywords = jdKeywords.filter((k) => !matchedKeywords.includes(k));
 
   const detectedSkills = SKILLS_DB.filter((s) => normResume.includes(normalizeAtsText(s)));
-  const actionVerbsFound = ACTION_VERBS.filter((v) => new RegExp(`\\b${v}\\b`, "i").test(normResume));
+  const actionVerbsFound = ACTION_VERBS.filter((v) =>
+    new RegExp(`\\b${v}\\b`, "i").test(normResume),
+  );
   const badPhrasesFound = BAD_PHRASES.filter((p) => normResume.includes(p));
 
   const wordCount = tokenize(resumeText).length;
@@ -116,9 +259,13 @@ export function analyzeResumeAgainstJob(resumeText: string, jobDescription: stri
   const hasMetrics = /(\d+%|\$\d+|\d+\+|\b\d{2,}\b)/.test(resumeText);
   const conciseLength = wordCount >= 250 && wordCount <= 900;
 
-  const keywordsScore = jdKeywords.length ? Math.round((matchedKeywords.length / jdKeywords.length) * 100) : 80;
+  const keywordsScore = jdKeywords.length
+    ? Math.round((matchedKeywords.length / jdKeywords.length) * 100)
+    : 80;
 
-  const jdSkills = SKILLS_DB.filter((s) => normalizeAtsText(jobDescription).includes(normalizeAtsText(s)));
+  const jdSkills = SKILLS_DB.filter((s) =>
+    normalizeAtsText(jobDescription).includes(normalizeAtsText(s)),
+  );
   let skillsMatchScore = 80;
   if (jdSkills.length > 0) {
     const matchedJdSkills = jdSkills.filter((s) => normResume.includes(s));
@@ -129,7 +276,7 @@ export function analyzeResumeAgainstJob(resumeText: string, jobDescription: stri
 
   let experienceScore = parsed.sections.experience ? (hasMetrics ? 100 : 70) : 0;
   if (actionVerbsFound.length > 3 && hasMetrics) experienceScore = 100;
-  
+
   const projectsScore = parsed.sections.projects ? (hasBullets ? 100 : 70) : 0;
   const educationScore = parsed.sections.education ? 100 : 0;
 
@@ -139,20 +286,29 @@ export function analyzeResumeAgainstJob(resumeText: string, jobDescription: stri
   if (parsed.email === "Not Detected" && parsed.phone === "Not Detected") formattingScore -= 40;
   formattingScore = Math.max(0, formattingScore);
 
-  const score = Math.round(keywordsScore * 0.25 + skillsMatchScore * 0.2 + experienceScore * 0.2 + formattingScore * 0.15 + projectsScore * 0.1 + educationScore * 0.1);
+  const score = Math.round(
+    keywordsScore * 0.25 +
+      skillsMatchScore * 0.2 +
+      experienceScore * 0.2 +
+      formattingScore * 0.15 +
+      projectsScore * 0.1 +
+      educationScore * 0.1,
+  );
   const grade = score >= 85 ? "Excellent" : score >= 65 ? "Good" : "Needs work";
-  
-  const summary = grade === "Excellent"
-    ? "Outstanding ATS alignment! Your resume checks all the boxes."
-    : grade === "Good"
-      ? "Solid resume. Tweaking a few missing elements can bump you into the top tier."
-      : "This resume might struggle in an ATS. Follow the improvements to fix critical issues.";
+
+  const summary =
+    grade === "Excellent"
+      ? "Outstanding ATS alignment! Your resume checks all the boxes."
+      : grade === "Good"
+        ? "Solid resume. Tweaking a few missing elements can bump you into the top tier."
+        : "This resume might struggle in an ATS. Follow the improvements to fix critical issues.";
 
   const strengths = [];
   const weaknesses = [];
   const improvements = [];
 
-  if (parsed.email !== "Not Detected" || parsed.phone !== "Not Detected") strengths.push("Contact information detected.");
+  if (parsed.email !== "Not Detected" || parsed.phone !== "Not Detected")
+    strengths.push("Contact information detected.");
   else weaknesses.push("Missing contact information.");
 
   if (hasBullets) strengths.push("Good use of bullet points for readability.");
@@ -162,7 +318,10 @@ export function analyzeResumeAgainstJob(resumeText: string, jobDescription: stri
   else improvements.push("Quantify your impact (use numbers, %, $).");
 
   if (actionVerbsFound.length >= 5) strengths.push("Strong use of action verbs.");
-  else improvements.push("Start bullet points with strong action verbs (e.g., 'Engineered', 'Optimized').");
+  else
+    improvements.push(
+      "Start bullet points with strong action verbs (e.g., 'Engineered', 'Optimized').",
+    );
 
   if (badPhrasesFound.length > 0) {
     weaknesses.push(`Found weak phrases: ${badPhrasesFound.join(", ")}`);
@@ -174,18 +333,37 @@ export function analyzeResumeAgainstJob(resumeText: string, jobDescription: stri
     if (wordCount > 900) weaknesses.push("Resume is too long. Keep it concise (1-2 pages).");
   }
 
-  if (!parsed.sections.experience) improvements.push("Add a clear 'Experience' or 'Work History' section.");
-  if (!parsed.sections.projects) improvements.push("Add a 'Projects' section to showcase practical skills.");
-  if (!parsed.sections.education) improvements.push("Make sure your 'Education' section is clearly labeled.");
-  if (!parsed.sections.skills) improvements.push("Add a dedicated 'Skills' section for ATS parsing.");
+  if (!parsed.sections.experience)
+    improvements.push("Add a clear 'Experience' or 'Work History' section.");
+  if (!parsed.sections.projects)
+    improvements.push("Add a 'Projects' section to showcase practical skills.");
+  if (!parsed.sections.education)
+    improvements.push("Make sure your 'Education' section is clearly labeled.");
+  if (!parsed.sections.skills)
+    improvements.push("Add a dedicated 'Skills' section for ATS parsing.");
 
   return {
     score,
     grade,
     summary,
     parsed,
-    categoryScores: { skillsMatch: skillsMatchScore, experience: experienceScore, projects: projectsScore, formatting: formattingScore, education: educationScore, keywords: keywordsScore },
-    feedback: { strengths, weaknesses, missingKeywords, improvements, detectedSkills, actionVerbs: actionVerbsFound, badPhrases: badPhrasesFound },
+    categoryScores: {
+      skillsMatch: skillsMatchScore,
+      experience: experienceScore,
+      projects: projectsScore,
+      formatting: formattingScore,
+      education: educationScore,
+      keywords: keywordsScore,
+    },
+    feedback: {
+      strengths,
+      weaknesses,
+      missingKeywords,
+      improvements,
+      detectedSkills,
+      actionVerbs: actionVerbsFound,
+      badPhrases: badPhrasesFound,
+    },
     wordCount,
   };
 }

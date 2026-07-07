@@ -8,7 +8,7 @@ export class LocalHeuristicEngine implements AIProvider {
     return "This is a local heuristic response. " + prompt;
   }
 
-  async analyzeResume(resumeText: string, jobDescription?: string): Promise<any> {
+  async analyzeResume(resumeText: string, jobDescription?: string): Promise<unknown> {
     // Placeholder for local ATS logic
     return {};
   }
@@ -19,10 +19,10 @@ export class LocalHeuristicEngine implements AIProvider {
       .replace(/[^a-z0-9\s]/g, "")
       .split(/\s+/)
       .filter((w) => w.length > 4);
-    
+
     const freqs: Record<string, number> = {};
     for (const w of words) freqs[w] = (freqs[w] || 0) + 1;
-    
+
     return Object.entries(freqs)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 20)
@@ -30,9 +30,12 @@ export class LocalHeuristicEngine implements AIProvider {
   }
 
   async semanticSearch(query: string, text: string): Promise<string> {
-    const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    const queryWords = query
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 2);
     const paragraphs = text.split(/\n\n+/);
-    
+
     let bestMatch = "";
     let maxScore = -1;
 

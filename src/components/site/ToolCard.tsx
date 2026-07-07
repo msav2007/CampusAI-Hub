@@ -35,7 +35,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
             </span>
           )}
           {tool.popular && (
-            <span className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-foreground/80">
+            <span className="rounded-full border border-foreground/10 bg-foreground/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-foreground/80">
               Popular
             </span>
           )}

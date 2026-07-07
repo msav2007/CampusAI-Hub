@@ -253,7 +253,7 @@ function Home() {
                   placeholder={`Search ${toolCounts.total} tools - try resume, CGPA, or JSON...`}
                   className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 />
-                <kbd className="hidden items-center gap-1 rounded-md border border-border/80 bg-white/5 px-1.5 py-0.5 text-[10px] text-muted-foreground sm:inline-flex">
+                <kbd className="hidden items-center gap-1 rounded-md border border-border/80 bg-foreground/5 px-1.5 py-0.5 text-[10px] text-muted-foreground sm:inline-flex">
                   ⌘K
                 </kbd>
               </div>
@@ -273,7 +273,7 @@ function Home() {
                   className={`rounded-full px-3 py-1.5 text-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
                     category === value
                       ? "border-transparent bg-foreground text-background"
-                      : "border border-border text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                      : "border border-border text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                   }`}
                 >
                   {value}
@@ -292,7 +292,7 @@ function Home() {
             </Link>
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 rounded-xl glass px-5 py-2.5 text-sm font-medium transition-all hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 rounded-xl glass px-5 py-2.5 text-sm font-medium transition-all hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Open preview
             </Link>
@@ -409,7 +409,7 @@ function Home() {
                 setQuery("");
                 setCategory("All");
               }}
-              className="mt-4 inline-flex items-center gap-2 rounded-lg glass px-3 py-1.5 text-xs hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg glass px-3 py-1.5 text-xs hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               Reset filters
             </button>
@@ -606,7 +606,7 @@ function Home() {
               </Link>
               <Link
                 to="/about"
-                className="inline-flex items-center gap-2 rounded-xl glass px-5 py-2.5 text-sm font-medium transition-all hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex items-center gap-2 rounded-xl glass px-5 py-2.5 text-sm font-medium transition-all hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 About us
               </Link>
@@ -634,7 +634,7 @@ function FAQItem({ q, a, id }: { q: string; a: string; id: string }) {
         aria-expanded={open}
         aria-controls={`${id}-panel`}
         id={`${id}-btn`}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-foreground/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <span className="text-sm font-medium sm:text-base">{q}</span>
         <span

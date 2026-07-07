@@ -90,7 +90,7 @@ function Dashboard() {
                     key={tool.slug}
                     to={tool.href}
                     search={{}}
-                    className="flex items-center gap-3 rounded-2xl glass p-4 transition-colors hover:bg-white/5"
+                    className="flex items-center gap-3 rounded-2xl glass p-4 transition-colors hover:bg-foreground/5"
                   >
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-gradient-brand shadow-glow">
                       <Icon className="h-5 w-5 text-primary-foreground" />

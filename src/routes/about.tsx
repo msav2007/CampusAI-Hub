@@ -118,7 +118,7 @@ function About() {
           </Link>
           <Link
             to="/tools"
-            className="inline-flex items-center gap-2 rounded-xl glass px-5 py-2.5 text-sm font-medium hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-xl glass px-5 py-2.5 text-sm font-medium hover:bg-foreground/10"
           >
             Browse tools
           </Link>

@@ -70,7 +70,7 @@ function ToolsPage() {
                 className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${
                   category === value
                     ? "border-transparent bg-foreground text-background"
-                    : "border-border text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                    : "border-border text-muted-foreground hover:bg-foreground/5 hover:text-foreground"
                 }`}
               >
                 {value}

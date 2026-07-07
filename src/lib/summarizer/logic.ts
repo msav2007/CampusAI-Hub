@@ -1,10 +1,6 @@
 import { localAI } from "@/lib/ai";
 
-export type SummaryMode =
-  | "ai-summary"
-  | "student-notes"
-  | "exam-mode"
-  | "flashcards";
+export type SummaryMode = "ai-summary" | "student-notes" | "exam-mode" | "flashcards";
 
 export type Analytics = {
   wordCount: number;
@@ -19,19 +15,161 @@ export type AnalysisResult = {
   output: string;
 };
 
-const STOP_WORDS = new Set(["a","about","above","after","again","against","all","am","an","and","any","are","as","at","be","because","been","before","being","below","between","both","but","by","can","could","did","do","does","doing","down","during","each","few","for","from","further","had","has","have","having","he","her","here","hers","herself","him","himself","his","how","i","if","in","into","is","it","its","itself","me","more","most","my","myself","no","nor","not","of","off","on","once","only","or","other","ought","our","ours","ourselves","out","over","own","same","she","should","so","some","such","than","that","the","their","theirs","them","themselves","then","there","these","they","this","those","through","to","too","under","until","up","very","was","we","were","what","when","where","which","while","who","whom","why","with","would","you","your","yours","yourself","yourselves"]);
+const STOP_WORDS = new Set([
+  "a",
+  "about",
+  "above",
+  "after",
+  "again",
+  "against",
+  "all",
+  "am",
+  "an",
+  "and",
+  "any",
+  "are",
+  "as",
+  "at",
+  "be",
+  "because",
+  "been",
+  "before",
+  "being",
+  "below",
+  "between",
+  "both",
+  "but",
+  "by",
+  "can",
+  "could",
+  "did",
+  "do",
+  "does",
+  "doing",
+  "down",
+  "during",
+  "each",
+  "few",
+  "for",
+  "from",
+  "further",
+  "had",
+  "has",
+  "have",
+  "having",
+  "he",
+  "her",
+  "here",
+  "hers",
+  "herself",
+  "him",
+  "himself",
+  "his",
+  "how",
+  "i",
+  "if",
+  "in",
+  "into",
+  "is",
+  "it",
+  "its",
+  "itself",
+  "me",
+  "more",
+  "most",
+  "my",
+  "myself",
+  "no",
+  "nor",
+  "not",
+  "of",
+  "off",
+  "on",
+  "once",
+  "only",
+  "or",
+  "other",
+  "ought",
+  "our",
+  "ours",
+  "ourselves",
+  "out",
+  "over",
+  "own",
+  "same",
+  "she",
+  "should",
+  "so",
+  "some",
+  "such",
+  "than",
+  "that",
+  "the",
+  "their",
+  "theirs",
+  "them",
+  "themselves",
+  "then",
+  "there",
+  "these",
+  "they",
+  "this",
+  "those",
+  "through",
+  "to",
+  "too",
+  "under",
+  "until",
+  "up",
+  "very",
+  "was",
+  "we",
+  "were",
+  "what",
+  "when",
+  "where",
+  "which",
+  "while",
+  "who",
+  "whom",
+  "why",
+  "with",
+  "would",
+  "you",
+  "your",
+  "yours",
+  "yourself",
+  "yourselves",
+]);
 
-const DEFINITION_MARKERS = [" is defined as ", " refers to ", " means ", " is a type of ", " known as ", " called ", " represents ", " stands for "];
+const DEFINITION_MARKERS = [
+  " is defined as ",
+  " refers to ",
+  " means ",
+  " is a type of ",
+  " known as ",
+  " called ",
+  " represents ",
+  " stands for ",
+];
 
 function getSentences(text: string): string[] {
-  return text.match(/[^.!?\n]+[.!?\n]+/g)?.map((s) => s.trim().replace(/\s+/g, " ")).filter((s) => s.length > 5) || [];
+  return (
+    text
+      .match(/[^.!?\n]+[.!?\n]+/g)
+      ?.map((s) => s.trim().replace(/\s+/g, " "))
+      .filter((s) => s.length > 5) || []
+  );
 }
 
 function getWords(text: string): string[] {
   return text.toLowerCase().match(/\b[a-z]{3,}\b/g) || [];
 }
 
-function textRank(sentences: string[], wordFreq: Record<string, number>): { sentence: string; score: number; index: number }[] {
+function textRank(
+  sentences: string[],
+  wordFreq: Record<string, number>,
+): { sentence: string; score: number; index: number }[] {
   return sentences.map((sentence, index) => {
     const sWords = getWords(sentence);
     let score = 0;
@@ -92,7 +230,7 @@ export async function analyzeNotes(text: string, mode: SummaryMode): Promise<Ana
     case "ai-summary": {
       const topCount = Math.max(5, Math.ceil(sentences.length * 0.3));
       const top = rankedSentences.slice(0, topCount).sort((a, b) => a.index - b.index);
-      
+
       const paragraphs = [];
       let currentPara = [];
       for (let i = 0; i < top.length; i++) {
@@ -109,16 +247,20 @@ export async function analyzeNotes(text: string, mode: SummaryMode): Promise<Ana
     case "student-notes": {
       const topCount = Math.max(4, Math.ceil(sentences.length * 0.25));
       const top = rankedSentences.slice(0, topCount).sort((a, b) => a.index - b.index);
-      
-      const definitions = sentences.filter((s) => DEFINITION_MARKERS.some((m) => s.toLowerCase().includes(m)));
-      
+
+      const definitions = sentences.filter((s) =>
+        DEFINITION_MARKERS.some((m) => s.toLowerCase().includes(m)),
+      );
+
       output = "### Student Notes\n\n";
       if (definitions.length > 0) {
         output += "#### Core Definitions\n";
-        definitions.slice(0, 5).forEach((d) => { output += `- ${d}\n`; });
+        definitions.slice(0, 5).forEach((d) => {
+          output += `- ${d}\n`;
+        });
         output += "\n";
       }
-      
+
       output += "#### Key Concepts\n";
       top.forEach((s, i) => {
         if (i % 3 === 0) output += `\n**${keyTopics[i % keyTopics.length].toUpperCase()}**\n`;
@@ -130,7 +272,7 @@ export async function analyzeNotes(text: string, mode: SummaryMode): Promise<Ana
     case "exam-mode": {
       const topSentences = rankedSentences.slice(0, 10).map((s) => s.sentence);
       output = "### Exam Prep Mode\n\n#### Important Topics\n" + keyTopics.join(", ") + "\n\n";
-      
+
       output += "#### Multiple Choice Questions\n";
       topSentences.slice(0, 3).forEach((s, i) => {
         const topic = keyTopics[i % keyTopics.length];
@@ -142,7 +284,7 @@ export async function analyzeNotes(text: string, mode: SummaryMode): Promise<Ana
       topSentences.slice(3, 6).forEach((s, i) => {
         output += `- Explain the significance of the following statement: "${s}"\n`;
       });
-      
+
       output += "\n#### Long Answer / Essay\n";
       if (keyTopics.length >= 2) {
         output += `- Discuss the relationship between ${keyTopics[0]} and ${keyTopics[1]} in the context of the provided material.\n`;
@@ -162,7 +304,7 @@ export async function analyzeNotes(text: string, mode: SummaryMode): Promise<Ana
               flashcards.push({
                 q: `What is ${term.charAt(0).toUpperCase() + term.slice(1)}?`,
                 a: s,
-                diff: s.length > 100 ? "Hard" : "Easy"
+                diff: s.length > 100 ? "Hard" : "Easy",
               });
               break;
             }
@@ -178,13 +320,18 @@ export async function analyzeNotes(text: string, mode: SummaryMode): Promise<Ana
             flashcards.push({
               q: `Explain '${t}' in this context.`,
               a: s.sentence,
-              diff: "Medium"
+              diff: "Medium",
             });
           }
         });
       }
 
-      output = "### Flashcard System\n\n" + flashcards.slice(0, 15).map((f, i) => `**Card ${i + 1} [${f.diff}]**\n**Front:** ${f.q}\n**Back:** ${f.a}`).join("\n\n---\n\n");
+      output =
+        "### Flashcard System\n\n" +
+        flashcards
+          .slice(0, 15)
+          .map((f, i) => `**Card ${i + 1} [${f.diff}]**\n**Front:** ${f.q}\n**Back:** ${f.a}`)
+          .join("\n\n---\n\n");
       break;
     }
   }

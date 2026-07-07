@@ -111,7 +111,7 @@ export function JsonTree({ data, searchQuery = "", isRoot = true, name }: JsonTr
         {!isEmpty && (
           <button
             onClick={() => setExpanded(!expanded)}
-            className="w-4 h-4 mr-1 hover:bg-white/10 rounded flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity"
+            className="w-4 h-4 mr-1 hover:bg-foreground/10 rounded flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity"
           >
             {expanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
           </button>

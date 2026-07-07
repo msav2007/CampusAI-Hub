@@ -347,7 +347,7 @@ function JsonPage() {
               {output.state === "empty" ? (
                 <div className="grid h-full place-items-center text-center">
                   <div className="text-sm text-muted-foreground">
-                    <div className="mx-auto mb-2 grid h-10 w-10 place-items-center rounded-full border border-border/60 bg-white/5">
+                    <div className="mx-auto mb-2 grid h-10 w-10 place-items-center rounded-full border border-border/60 bg-foreground/5">
                       <FileJson className="h-4 w-4" />
                     </div>
                     Provide JSON on the left to see results here.

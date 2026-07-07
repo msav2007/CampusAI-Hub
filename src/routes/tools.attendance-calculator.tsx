@@ -134,7 +134,7 @@ function AttendancePage() {
                     {result.meets ? "On track" : "Below target"}
                   </span>
                 </div>
-                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/5">
+                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-foreground/5">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-brand to-brand-2 transition-[width] duration-500"
                     style={{ width: `${Math.min(100, Math.max(0, result.current))}%` }}

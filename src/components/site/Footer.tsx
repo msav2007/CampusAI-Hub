@@ -118,7 +118,7 @@ export function Footer() {
                     key={label}
                     href={href}
                     aria-label={label}
-                    className="grid h-9 w-9 place-items-center rounded-lg glass transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="grid h-9 w-9 place-items-center rounded-lg glass transition-colors hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                   </a>
@@ -127,7 +127,7 @@ export function Footer() {
                     key={label}
                     to={href}
                     aria-label={label}
-                    className="grid h-9 w-9 place-items-center rounded-lg glass transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="grid h-9 w-9 place-items-center rounded-lg glass transition-colors hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                   </Link>

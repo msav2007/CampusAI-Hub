@@ -74,8 +74,8 @@ export function Nav() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  activeProps={{ className: "bg-white/5 text-foreground" }}
+                  className="rounded-lg px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  activeProps={{ className: "bg-foreground/5 text-foreground" }}
                 >
                   {link.label}
                 </Link>
@@ -102,7 +102,7 @@ export function Nav() {
                 aria-expanded={open}
                 aria-controls="mobile-menu"
                 aria-label={open ? "Close menu" : "Open menu"}
-                className="grid h-9 w-9 place-items-center rounded-lg glass transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+                className="grid h-9 w-9 place-items-center rounded-lg glass transition-colors hover:bg-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
               >
                 {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </button>
@@ -120,7 +120,7 @@ export function Nav() {
                     <Link
                       to={link.to}
                       onClick={() => setOpen(false)}
-                      className="block rounded-lg px-3 py-3 text-sm text-foreground/90 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="block rounded-lg px-3 py-3 text-sm text-foreground/90 hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {link.label}
                     </Link>
@@ -131,7 +131,7 @@ export function Nav() {
                 <Link
                   to="/dashboard"
                   onClick={() => setOpen(false)}
-                  className="flex-1 rounded-lg glass px-3 py-2 text-center text-sm hover:bg-white/10"
+                  className="flex-1 rounded-lg glass px-3 py-2 text-center text-sm hover:bg-foreground/10"
                 >
                   Preview
                 </Link>

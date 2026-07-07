@@ -240,7 +240,7 @@ function ReadmeStudioPage() {
                     key={key}
                     type="button"
                     onClick={() => loadTemplate(key as keyof typeof TEMPLATES)}
-                    className="px-2 py-1 text-[11px] transition-colors text-muted-foreground hover:text-foreground hover:bg-white/5 capitalize"
+                    className="px-2 py-1 text-[11px] transition-colors text-muted-foreground hover:text-foreground hover:bg-foreground/5 capitalize"
                   >
                     {key}
                   </button>

@@ -27,22 +27,38 @@ import { Label } from "@/components/ui/label";
 import { buildPageHead } from "@/lib/seo";
 
 import { extractTextFromFile } from "@/lib/notes/file-extractor";
-import { analyzeNotes, chatWithNotes, type SummaryMode, type AnalysisResult } from "@/lib/summarizer/logic";
+import {
+  analyzeNotes,
+  chatWithNotes,
+  type SummaryMode,
+  type AnalysisResult,
+} from "@/lib/summarizer/logic";
 
 export const Route = createFileRoute("/tools/notes-summarizer")({
   head: () => ({
     ...buildPageHead({
       title: "Notes Assistant Pro: Local AI Summarizer | CampusAI Hub",
-      description: "Convert notes into summaries, flashcards, exam questions, and chat with your documents locally.",
+      description:
+        "Convert notes into summaries, flashcards, exam questions, and chat with your documents locally.",
       path: "/tools/notes-summarizer",
     }),
   }),
   component: NotesAssistantPage,
 });
 
-const SUMMARY_MODES: { value: SummaryMode; label: string; icon: React.ElementType; desc: string }[] = [
+const SUMMARY_MODES: {
+  value: SummaryMode;
+  label: string;
+  icon: React.ElementType;
+  desc: string;
+}[] = [
   { value: "ai-summary", label: "AI Summary", icon: FileText, desc: "TextRank analysis" },
-  { value: "student-notes", label: "Student Notes", icon: BookOpen, desc: "Headings & definitions" },
+  {
+    value: "student-notes",
+    label: "Student Notes",
+    icon: BookOpen,
+    desc: "Headings & definitions",
+  },
   { value: "exam-mode", label: "Exam Mode", icon: GraduationCap, desc: "MCQs & questions" },
   { value: "flashcards", label: "Flashcards", icon: HelpCircle, desc: "Front/back study cards" },
 ];
@@ -55,10 +71,10 @@ function NotesAssistantPage() {
 
   const [selectedMode, setSelectedMode] = useState<SummaryMode | "chat">("ai-summary");
   const [result, setResult] = useState<AnalysisResult | null>(null);
-  
+
   // Chat state
   const [chatQuery, setChatQuery] = useState("");
-  const [chatHistory, setChatHistory] = useState<{role: "user" | "ai", text: string}[]>([]);
+  const [chatHistory, setChatHistory] = useState<{ role: "user" | "ai"; text: string }[]>([]);
 
   const activeText = file ? extractedFileText : manualText;
 
@@ -73,7 +89,8 @@ function NotesAssistantPage() {
     toast.loading("Analyzing file...", { id: "extract" });
     try {
       const text = await extractTextFromFile(uploaded);
-      if (!text || text.trim().length < 20) throw new Error("No readable content found or file is too short.");
+      if (!text || text.trim().length < 20)
+        throw new Error("No readable content found or file is too short.");
       setExtractedFileText(text);
       toast.success("Text extracted successfully", { id: "extract" });
     } catch (err: unknown) {
@@ -93,7 +110,8 @@ function NotesAssistantPage() {
   };
 
   const handleGenerate = async (mode: SummaryMode) => {
-    if (activeText.trim().length < 50) return toast.error("Please provide more text (at least 50 characters).");
+    if (activeText.trim().length < 50)
+      return toast.error("Please provide more text (at least 50 characters).");
     setIsLoading(true);
     toast.loading("Analyzing notes...", { id: "gen" });
     try {
@@ -111,12 +129,12 @@ function NotesAssistantPage() {
     if (!chatQuery.trim() || activeText.trim().length < 50) return;
     const q = chatQuery;
     setChatQuery("");
-    setChatHistory(prev => [...prev, { role: "user", text: q }]);
+    setChatHistory((prev) => [...prev, { role: "user", text: q }]);
     setIsLoading(true);
-    
+
     try {
       const answer = await chatWithNotes(activeText, q);
-      setChatHistory(prev => [...prev, { role: "ai", text: answer }]);
+      setChatHistory((prev) => [...prev, { role: "ai", text: answer }]);
     } catch {
       toast.error("Failed to search notes.");
     } finally {
@@ -153,12 +171,20 @@ function NotesAssistantPage() {
       const margin = 50;
       let currentY = height - margin;
 
-      page.drawText(`Notes Assistant - ${selectedMode}`, { x: margin, y: currentY, size: 18, font: boldFont });
+      page.drawText(`Notes Assistant - ${selectedMode}`, {
+        x: margin,
+        y: currentY,
+        size: 18,
+        font: boldFont,
+      });
       currentY -= 36;
 
       const paragraphs = result.output.split("\n");
       for (const para of paragraphs) {
-        if (!para.trim()) { currentY -= 10; continue; }
+        if (!para.trim()) {
+          currentY -= 10;
+          continue;
+        }
         const isBold = para.startsWith("**") || para.startsWith("###");
         const cleanPara = para.replace(/\*\*/g, "").replace(/###\s/g, "");
         const currentFont = isBold ? boldFont : font;
@@ -171,15 +197,23 @@ function NotesAssistantPage() {
             page.drawText(line.trim(), { x: margin, y: currentY, size: 12, font: currentFont });
             currentY -= 16;
             line = words[i] + " ";
-            if (currentY < margin) { page = pdfDoc.addPage([600, 800]); currentY = height - margin; }
-          } else { line = testLine; }
+            if (currentY < margin) {
+              page = pdfDoc.addPage([600, 800]);
+              currentY = height - margin;
+            }
+          } else {
+            line = testLine;
+          }
         }
         if (line !== "") {
           page.drawText(line.trim(), { x: margin, y: currentY, size: 12, font: currentFont });
           currentY -= 16;
         }
         currentY -= 5;
-        if (currentY < margin) { page = pdfDoc.addPage([600, 800]); currentY = height - margin; }
+        if (currentY < margin) {
+          page = pdfDoc.addPage([600, 800]);
+          currentY = height - margin;
+        }
       }
 
       const pdfBytes = await pdfDoc.save();
@@ -199,7 +233,11 @@ function NotesAssistantPage() {
   return (
     <ToolShell
       eyebrow="Productivity"
-      title={<>Notes <span className="text-gradient">Assistant Pro</span></>}
+      title={
+        <>
+          Notes <span className="text-gradient">Assistant Pro</span>
+        </>
+      }
       description="Advanced intelligence: AI summaries, student notes, exam prep, flashcards, and local document chat."
     >
       <div className="grid gap-8 lg:grid-cols-12">
@@ -209,7 +247,12 @@ function NotesAssistantPage() {
             <div className="flex items-center justify-between border-b border-border/40 pb-4">
               <h2 className="text-lg font-semibold">1. Input Notes</h2>
               {(file || manualText) && (
-                <Button variant="ghost" size="sm" onClick={handleClear} className="text-destructive h-8">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClear}
+                  className="text-destructive h-8"
+                >
                   <Trash2 className="h-4 w-4 mr-1.5" /> Clear
                 </Button>
               )}
@@ -230,9 +273,19 @@ function NotesAssistantPage() {
 
               {(!manualText || file) && (
                 <div className="space-y-2">
-                  {!file && <div className="text-center text-xs text-muted-foreground my-2 font-medium">OR</div>}
+                  {!file && (
+                    <div className="text-center text-xs text-muted-foreground my-2 font-medium">
+                      OR
+                    </div>
+                  )}
                   <FileUpload
-                    accept={{ "application/pdf": [".pdf"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"], "text/plain": [".txt"] }}
+                    accept={{
+                      "application/pdf": [".pdf"],
+                      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
+                        ".docx",
+                      ],
+                      "text/plain": [".txt"],
+                    }}
                     maxFiles={1}
                     value={file ? [file] : []}
                     onChange={handleUpload}
@@ -250,11 +303,16 @@ function NotesAssistantPage() {
                   return (
                     <button
                       key={mode.value}
-                      onClick={() => { setSelectedMode(mode.value); if(activeText) handleGenerate(mode.value); }}
+                      onClick={() => {
+                        setSelectedMode(mode.value);
+                        if (activeText) handleGenerate(mode.value);
+                      }}
                       className={`flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all ${selectedMode === mode.value ? "bg-brand/10 border-brand text-brand-foreground" : "bg-surface-2/30 border-border/50 hover:border-brand/50"}`}
                     >
                       <div className="flex items-center gap-2">
-                        <Icon className={`h-4 w-4 ${selectedMode === mode.value ? "text-brand" : "text-muted-foreground"}`} />
+                        <Icon
+                          className={`h-4 w-4 ${selectedMode === mode.value ? "text-brand" : "text-muted-foreground"}`}
+                        />
                         <span className="font-medium text-sm">{mode.label}</span>
                       </div>
                       <span className="text-[10px] text-muted-foreground">{mode.desc}</span>
@@ -266,7 +324,9 @@ function NotesAssistantPage() {
                   className={`flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition-all ${selectedMode === "chat" ? "bg-brand/10 border-brand text-brand-foreground" : "bg-surface-2/30 border-border/50 hover:border-brand/50"}`}
                 >
                   <div className="flex items-center gap-2">
-                    <MessageCircle className={`h-4 w-4 ${selectedMode === "chat" ? "text-brand" : "text-muted-foreground"}`} />
+                    <MessageCircle
+                      className={`h-4 w-4 ${selectedMode === "chat" ? "text-brand" : "text-muted-foreground"}`}
+                    />
                     <span className="font-medium text-sm">Chat (Local)</span>
                   </div>
                   <span className="text-[10px] text-muted-foreground">Search uploaded notes</span>
@@ -295,11 +355,18 @@ function NotesAssistantPage() {
                   <>
                     <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
                       {chatHistory.length === 0 ? (
-                        <div className="text-center text-muted-foreground text-sm mt-10">Ask a question based on your notes!</div>
+                        <div className="text-center text-muted-foreground text-sm mt-10">
+                          Ask a question based on your notes!
+                        </div>
                       ) : (
                         chatHistory.map((msg, i) => (
-                          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                            <div className={`p-3 rounded-xl max-w-[85%] text-sm ${msg.role === "user" ? "bg-brand text-brand-foreground" : "bg-surface-2/60 border border-border/50"}`}>
+                          <div
+                            key={i}
+                            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                          >
+                            <div
+                              className={`p-3 rounded-xl max-w-[85%] text-sm ${msg.role === "user" ? "bg-brand text-brand-foreground" : "bg-surface-2/60 border border-border/50"}`}
+                            >
                               {msg.text}
                             </div>
                           </div>
@@ -307,11 +374,11 @@ function NotesAssistantPage() {
                       )}
                     </div>
                     <div className="flex gap-2">
-                      <Input 
-                        value={chatQuery} 
-                        onChange={e => setChatQuery(e.target.value)} 
-                        placeholder="Search or ask about your notes..." 
-                        onKeyDown={e => e.key === "Enter" && handleChat()}
+                      <Input
+                        value={chatQuery}
+                        onChange={(e) => setChatQuery(e.target.value)}
+                        placeholder="Search or ask about your notes..."
+                        onKeyDown={(e) => e.key === "Enter" && handleChat()}
                       />
                       <Button onClick={handleChat} disabled={isLoading || !chatQuery.trim()}>
                         <Send className="h-4 w-4" />
@@ -328,9 +395,30 @@ function NotesAssistantPage() {
                   </h2>
                   {result && (
                     <div className="flex gap-2">
-                      <Button variant="outline" size="icon" onClick={copyResult} className="h-8 w-8"><Copy className="h-3.5 w-3.5" /></Button>
-                      <Button variant="outline" size="icon" onClick={downloadTxt} className="h-8 w-8"><FileArchive className="h-3.5 w-3.5" /></Button>
-                      <Button variant="outline" size="icon" onClick={downloadPdf} className="h-8 w-8"><Download className="h-3.5 w-3.5" /></Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={copyResult}
+                        className="h-8 w-8"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={downloadTxt}
+                        className="h-8 w-8"
+                      >
+                        <FileArchive className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={downloadPdf}
+                        className="h-8 w-8"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -343,13 +431,38 @@ function NotesAssistantPage() {
                   <div className="flex-1 overflow-y-auto pr-2">
                     <div className="prose prose-sm dark:prose-invert max-w-none">
                       {result.output.split("\n").map((line, i) => {
-                        if (line.startsWith("###")) return <h3 key={i} className="text-lg font-bold">{line.replace("### ", "")}</h3>;
-                        if (line.startsWith("####")) return <h4 key={i} className="text-md font-semibold text-brand mt-4">{line.replace("#### ", "")}</h4>;
-                        if (line.startsWith("**") && line.endsWith("**")) return <p key={i} className="font-semibold">{line.replace(/\*\*/g, "")}</p>;
-                        if (line.startsWith("- ")) return <li key={i} className="ml-4">{line.substring(2)}</li>;
-                        if (line.trim() === "---") return <hr key={i} className="my-6 border-border/50" />;
+                        if (line.startsWith("###"))
+                          return (
+                            <h3 key={i} className="text-lg font-bold">
+                              {line.replace("### ", "")}
+                            </h3>
+                          );
+                        if (line.startsWith("####"))
+                          return (
+                            <h4 key={i} className="text-md font-semibold text-brand mt-4">
+                              {line.replace("#### ", "")}
+                            </h4>
+                          );
+                        if (line.startsWith("**") && line.endsWith("**"))
+                          return (
+                            <p key={i} className="font-semibold">
+                              {line.replace(/\*\*/g, "")}
+                            </p>
+                          );
+                        if (line.startsWith("- "))
+                          return (
+                            <li key={i} className="ml-4">
+                              {line.substring(2)}
+                            </li>
+                          );
+                        if (line.trim() === "---")
+                          return <hr key={i} className="my-6 border-border/50" />;
                         if (!line.trim()) return <div key={i} className="h-2" />;
-                        return <p key={i} className="text-muted-foreground">{line}</p>;
+                        return (
+                          <p key={i} className="text-muted-foreground">
+                            {line}
+                          </p>
+                        );
                       })}
                     </div>
                   </div>

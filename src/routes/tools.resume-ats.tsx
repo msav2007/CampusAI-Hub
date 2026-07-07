@@ -55,7 +55,8 @@ export const Route = createFileRoute("/tools/resume-ats")({
   head: () => ({
     ...buildPageHead({
       title: "Resume ATS Checker Pro | CampusAI Tools",
-      description: "Upload your resume, paste a job description, and get a realistic ATS score, parsed recruiter view, and keyword matching.",
+      description:
+        "Upload your resume, paste a job description, and get a realistic ATS score, parsed recruiter view, and keyword matching.",
       path: "/tools/resume-ats",
       keywords: "resume ats checker, ats resume score, pdf resume scanner, resume keyword checker",
     }),
@@ -110,7 +111,12 @@ function ResumeAtsPage() {
     setJobDescription("");
   };
 
-  const scoreTone = analysis && analysis.score >= 85 ? "text-emerald-400" : analysis && analysis.score >= 65 ? "text-amber-400" : "text-rose-400";
+  const scoreTone =
+    analysis && analysis.score >= 85
+      ? "text-emerald-400"
+      : analysis && analysis.score >= 65
+        ? "text-amber-400"
+        : "text-rose-400";
 
   const copyReport = async () => {
     if (!analysis) return;
@@ -134,7 +140,10 @@ function ResumeAtsPage() {
       const drawText = (text: string, size = 12, isBold = false) => {
         page.drawText(text, { x: margin, y, size, font: isBold ? boldFont : font });
         y -= lineHeight;
-        if (y < margin) { page = pdfDoc.addPage([600, 800]); y = 750; }
+        if (y < margin) {
+          page = pdfDoc.addPage([600, 800]);
+          y = 750;
+        }
       };
 
       drawText("ATS Resume Analysis Report", 18, true);
@@ -183,7 +192,11 @@ function ResumeAtsPage() {
   return (
     <ToolShell
       eyebrow="Career"
-      title={<>Resume <span className="text-gradient">ATS Checker Pro</span></>}
+      title={
+        <>
+          Resume <span className="text-gradient">ATS Checker Pro</span>
+        </>
+      }
       description="Detailed ATS parsing, recruiter view, skill matching, and missing keyword analysis."
     >
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
@@ -192,14 +205,25 @@ function ResumeAtsPage() {
             <div className="flex items-center justify-between mb-4 border-b border-border/40 pb-2">
               <h2 className="text-lg font-semibold tracking-tight">1. Upload Resume</h2>
               {files.length > 0 && (
-                <Button variant="ghost" size="sm" onClick={handleClear} className="text-destructive h-8">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClear}
+                  className="text-destructive h-8"
+                >
                   <Trash2 className="h-4 w-4 mr-1.5" /> Clear
                 </Button>
               )}
             </div>
-            
+
             <FileUpload
-              accept={{ "application/pdf": [".pdf"], "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"], "text/plain": [".txt"] }}
+              accept={{
+                "application/pdf": [".pdf"],
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [
+                  ".docx",
+                ],
+                "text/plain": [".txt"],
+              }}
               maxFiles={1}
               value={files}
               onChange={handleFileUpload}
@@ -209,7 +233,11 @@ function ResumeAtsPage() {
             <div className="mt-8 flex-1">
               <div className="flex items-center justify-between mb-4 border-b border-border/40 pb-2">
                 <h2 className="text-lg font-semibold tracking-tight">2. Target Job (Optional)</h2>
-                <Button variant="ghost" size="sm" onClick={() => setJobDescription(SAMPLE_JOB_DESCRIPTION)}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setJobDescription(SAMPLE_JOB_DESCRIPTION)}
+                >
                   <Sparkles className="h-4 w-4 mr-2" /> Load Sample
                 </Button>
               </div>
@@ -231,8 +259,24 @@ function ResumeAtsPage() {
             </h2>
             {analysis && (
               <div className="flex gap-2">
-                <Button variant="outline" size="icon" onClick={copyReport} title="Copy Report" className="h-9 w-9"><Copy className="h-4 w-4" /></Button>
-                <Button variant="outline" size="icon" onClick={downloadReportPdf} title="Download PDF" className="h-9 w-9"><Download className="h-4 w-4" /></Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={copyReport}
+                  title="Copy Report"
+                  className="h-9 w-9"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={downloadReportPdf}
+                  title="Download PDF"
+                  className="h-9 w-9"
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
               </div>
             )}
           </div>
@@ -244,76 +288,151 @@ function ResumeAtsPage() {
             </div>
           ) : (
             <div className="space-y-6 flex-1 overflow-y-auto pr-2 custom-scrollbar">
-              
               {/* Recruiter View (Parsed Data) */}
               <div className="rounded-2xl border border-border/60 bg-surface-2/20 p-5 space-y-4">
                 <h3 className="text-sm font-bold flex items-center gap-2 text-brand">
-                  <Eye className="h-4 w-4" /> Recruiter View 
-                  <span className="text-xs font-normal text-muted-foreground ml-2">(How an ATS parses you)</span>
+                  <Eye className="h-4 w-4" /> Recruiter View
+                  <span className="text-xs font-normal text-muted-foreground ml-2">
+                    (How an ATS parses you)
+                  </span>
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-muted-foreground text-xs uppercase font-semibold">Name</span>
+                    <span className="text-muted-foreground text-xs uppercase font-semibold">
+                      Name
+                    </span>
                     <p className="font-medium text-foreground truncate">{analysis.parsed.name}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground text-xs uppercase font-semibold">Email</span>
+                    <span className="text-muted-foreground text-xs uppercase font-semibold">
+                      Email
+                    </span>
                     <p className="font-medium text-foreground truncate">{analysis.parsed.email}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground text-xs uppercase font-semibold">Phone</span>
+                    <span className="text-muted-foreground text-xs uppercase font-semibold">
+                      Phone
+                    </span>
                     <p className="font-medium text-foreground">{analysis.parsed.phone}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground text-xs uppercase font-semibold">Links found</span>
+                    <span className="text-muted-foreground text-xs uppercase font-semibold">
+                      Links found
+                    </span>
                     <p className="font-medium text-foreground">{analysis.parsed.links.length}</p>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2 pt-2 border-t border-border/40">
-                  <span className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.experience ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"}`}>Experience</span>
-                  <span className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.education ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"}`}>Education</span>
-                  <span className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.projects ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"}`}>Projects</span>
-                  <span className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.skills ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>Skills Section</span>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.experience ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"}`}
+                  >
+                    Experience
+                  </span>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.education ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"}`}
+                  >
+                    Education
+                  </span>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.projects ? "bg-emerald-500/10 text-emerald-400" : "bg-rose-500/10 text-rose-400"}`}
+                  >
+                    Projects
+                  </span>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-md ${analysis.parsed.sections.skills ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}
+                  >
+                    Skills Section
+                  </span>
                 </div>
               </div>
 
               {/* Overall Score */}
               <div className="rounded-2xl border border-border/60 bg-surface-2/40 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
-                  <span className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">Overall ATS Score</span>
-                  <div className={`text-6xl font-black tracking-tighter tabular-nums mt-2 ${scoreTone}`}>{analysis.score}</div>
+                  <span className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
+                    Overall ATS Score
+                  </span>
+                  <div
+                    className={`text-6xl font-black tracking-tighter tabular-nums mt-2 ${scoreTone}`}
+                  >
+                    {analysis.score}
+                  </div>
                 </div>
                 <div className="flex-1 text-center md:text-right">
-                  <div className="inline-block px-4 py-1.5 rounded-full bg-brand/10 text-brand font-bold text-sm mb-2">{analysis.grade}</div>
+                  <div className="inline-block px-4 py-1.5 rounded-full bg-brand/10 text-brand font-bold text-sm mb-2">
+                    {analysis.grade}
+                  </div>
                   <p className="text-sm text-muted-foreground">{analysis.summary}</p>
                 </div>
               </div>
 
               {/* Category Scores */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <CategoryCard title="Skills Match" score={analysis.categoryScores.skillsMatch} icon={<CheckSquare />} />
-                <CategoryCard title="Experience" score={analysis.categoryScores.experience} icon={<Briefcase />} />
-                <CategoryCard title="Projects" score={analysis.categoryScores.projects} icon={<Layers />} />
-                <CategoryCard title="Formatting" score={analysis.categoryScores.formatting} icon={<AlignLeft />} />
-                <CategoryCard title="Education" score={analysis.categoryScores.education} icon={<GraduationCap />} />
-                <CategoryCard title="Keywords" score={analysis.categoryScores.keywords} icon={<Search />} />
+                <CategoryCard
+                  title="Skills Match"
+                  score={analysis.categoryScores.skillsMatch}
+                  icon={<CheckSquare />}
+                />
+                <CategoryCard
+                  title="Experience"
+                  score={analysis.categoryScores.experience}
+                  icon={<Briefcase />}
+                />
+                <CategoryCard
+                  title="Projects"
+                  score={analysis.categoryScores.projects}
+                  icon={<Layers />}
+                />
+                <CategoryCard
+                  title="Formatting"
+                  score={analysis.categoryScores.formatting}
+                  icon={<AlignLeft />}
+                />
+                <CategoryCard
+                  title="Education"
+                  score={analysis.categoryScores.education}
+                  icon={<GraduationCap />}
+                />
+                <CategoryCard
+                  title="Keywords"
+                  score={analysis.categoryScores.keywords}
+                  icon={<Search />}
+                />
               </div>
 
               {/* Feedback System */}
               <div className="space-y-4">
                 <div className="rounded-xl border border-border/60 bg-emerald-500/5 p-5">
-                  <h3 className="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2"><CheckCircle2 className="h-4 w-4" /> Strengths</h3>
-                  <ul className="space-y-2 text-sm text-foreground/90">{analysis.feedback.strengths.map((s, i) => <li key={i}>• {s}</li>)}</ul>
+                  <h3 className="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4" /> Strengths
+                  </h3>
+                  <ul className="space-y-2 text-sm text-foreground/90">
+                    {analysis.feedback.strengths.map((s, i) => (
+                      <li key={i}>• {s}</li>
+                    ))}
+                  </ul>
                 </div>
                 {analysis.feedback.weaknesses.length > 0 && (
                   <div className="rounded-xl border border-border/60 bg-rose-500/5 p-5">
-                    <h3 className="text-sm font-bold text-rose-400 mb-3 flex items-center gap-2"><AlertTriangle className="h-4 w-4" /> Weaknesses</h3>
-                    <ul className="space-y-2 text-sm text-foreground/90">{analysis.feedback.weaknesses.map((s, i) => <li key={i}>• {s}</li>)}</ul>
+                    <h3 className="text-sm font-bold text-rose-400 mb-3 flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4" /> Weaknesses
+                    </h3>
+                    <ul className="space-y-2 text-sm text-foreground/90">
+                      {analysis.feedback.weaknesses.map((s, i) => (
+                        <li key={i}>• {s}</li>
+                      ))}
+                    </ul>
                   </div>
                 )}
                 <div className="rounded-xl border border-border/60 bg-amber-500/5 p-5">
-                  <h3 className="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2"><Sparkles className="h-4 w-4" /> Suggested Improvements</h3>
-                  <ul className="space-y-2 text-sm text-foreground/90">{analysis.feedback.improvements.map((s, i) => <li key={i}>• {s}</li>)}</ul>
+                  <h3 className="text-sm font-bold text-amber-400 mb-3 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" /> Suggested Improvements
+                  </h3>
+                  <ul className="space-y-2 text-sm text-foreground/90">
+                    {analysis.feedback.improvements.map((s, i) => (
+                      <li key={i}>• {s}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
@@ -323,15 +442,38 @@ function ResumeAtsPage() {
                   <h3 className="text-sm font-bold mb-3">Missing Keywords (Add these!)</h3>
                   <div className="flex flex-wrap gap-2">
                     {analysis.feedback.missingKeywords.length > 0 ? (
-                      analysis.feedback.missingKeywords.map((k) => <span key={k} className="px-2.5 py-1 rounded-md bg-rose-500/10 text-rose-400 text-xs font-medium">{k}</span>)
-                    ) : <span className="text-sm text-emerald-400">Perfect keyword coverage!</span>}
+                      analysis.feedback.missingKeywords.map((k) => (
+                        <span
+                          key={k}
+                          className="px-2.5 py-1 rounded-md bg-rose-500/10 text-rose-400 text-xs font-medium"
+                        >
+                          {k}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-sm text-emerald-400">Perfect keyword coverage!</span>
+                    )}
                   </div>
                 </div>
                 <div className="rounded-xl border border-border/60 bg-surface-2/30 p-5">
                   <h3 className="text-sm font-bold mb-3">Detected Skills & Action Verbs</h3>
                   <div className="flex flex-wrap gap-2">
-                    {analysis.feedback.detectedSkills.map((k) => <span key={k} className="px-2.5 py-1 rounded-md bg-brand/10 text-brand text-xs font-medium">{k}</span>)}
-                    {analysis.feedback.actionVerbs.map((k) => <span key={k} className="px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 text-xs font-medium">{k}</span>)}
+                    {analysis.feedback.detectedSkills.map((k) => (
+                      <span
+                        key={k}
+                        className="px-2.5 py-1 rounded-md bg-brand/10 text-brand text-xs font-medium"
+                      >
+                        {k}
+                      </span>
+                    ))}
+                    {analysis.feedback.actionVerbs.map((k) => (
+                      <span
+                        key={k}
+                        className="px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 text-xs font-medium"
+                      >
+                        {k}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -346,7 +488,11 @@ function ResumeAtsPage() {
 function UploadStatus({ state }: { state: ResumeUploadState }) {
   if (state.status === "idle") return null;
   if (state.status === "loading") {
-    return <div className="mt-4 flex items-center gap-2 rounded-xl border border-border/60 bg-background/30 p-3 text-sm text-muted-foreground"><LoaderCircle className="h-4 w-4 animate-spin" /> Extracting text...</div>;
+    return (
+      <div className="mt-4 flex items-center gap-2 rounded-xl border border-border/60 bg-background/30 p-3 text-sm text-muted-foreground">
+        <LoaderCircle className="h-4 w-4 animate-spin" /> Extracting text...
+      </div>
+    );
   }
   if (state.status === "error") {
     return (
@@ -358,19 +504,33 @@ function UploadStatus({ state }: { state: ResumeUploadState }) {
   }
   return (
     <div className="mt-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm flex items-center justify-between">
-      <div className="flex items-center gap-2 font-medium text-emerald-300"><CheckCircle2 className="h-4 w-4" /> Parsed successfully</div>
-      <div className="text-xs text-emerald-400/80">{state.pageCount} page(s) • {state.source.toUpperCase()}</div>
+      <div className="flex items-center gap-2 font-medium text-emerald-300">
+        <CheckCircle2 className="h-4 w-4" /> Parsed successfully
+      </div>
+      <div className="text-xs text-emerald-400/80">
+        {state.pageCount} page(s) • {state.source.toUpperCase()}
+      </div>
     </div>
   );
 }
 
-function CategoryCard({ title, score, icon }: { title: string; score: number; icon: React.ReactNode }) {
+function CategoryCard({
+  title,
+  score,
+  icon,
+}: {
+  title: string;
+  score: number;
+  icon: React.ReactNode;
+}) {
   const color = score >= 80 ? "text-emerald-400" : score >= 50 ? "text-amber-400" : "text-rose-400";
   return (
     <div className="rounded-xl border border-border/60 bg-surface-2/40 p-4 flex flex-col items-center text-center">
       <div className="text-muted-foreground/60 mb-2 [&>svg]:w-5 [&>svg]:h-5">{icon}</div>
       <div className={`text-2xl font-bold tracking-tight ${color}`}>{score}%</div>
-      <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1 font-semibold">{title}</div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground mt-1 font-semibold">
+        {title}
+      </div>
     </div>
   );
 }
